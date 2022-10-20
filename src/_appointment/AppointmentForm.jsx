@@ -1,16 +1,19 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import moment from "moment/moment";
 import { ErrorMessage } from "@hookform/error-message";
 import Calendario from "_components/Calendario";
+import {dateToHuman} from "../_helpers/localizeDate";
 
 const AppointmentForm = ({appointmentData, handleAppointment}) => {
   // form validation rules
   const validationSchema = Yup.object().shape({
-    idPatient: Yup.string().required("Id del paciente es requerido"),
-    dateAppointment: Yup.date().required("Fecha de la cita es requerida"),
+    patientId: Yup.string().required("Id del paciente es requerido"),
+    dateAppointmentStart: Yup.date().required("Fecha de la cita es requerida"),
+    dateAppointmentEnd: Yup.date().required("Fecha de la cita es requerida"),
     status: Yup.string().required("Estado de la cita es requerido"),
     observations: Yup.string().required("Observaciones de la cita es requerida"),
   });
@@ -21,7 +24,7 @@ const AppointmentForm = ({appointmentData, handleAppointment}) => {
   const { errors, isSubmitting } = formState;
   useEffect(() => {
     if(appointmentData){
-      reset(appointmentData);
+      reset({ ...appointmentData, dateAppointmentStart: dateToHuman(appointmentData.dateAppointmentStart), dateAppointmentEnd: dateToHuman(appointmentData.dateAppointmentEnd)})
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appointmentData]);
@@ -29,6 +32,15 @@ const AppointmentForm = ({appointmentData, handleAppointment}) => {
   const onSubmit = data => {
     handleAppointment(data);
   };
+
+  const handleSelectDate = ({start, end}) => {
+    reset({
+      ...watch(),
+      dateAppointmentStart: dateToHuman(start),
+      dateAppointmentEnd: dateToHuman(end),
+    });
+  }
+
   return (
     <>
         <ErrorMessage
@@ -45,29 +57,25 @@ const AppointmentForm = ({appointmentData, handleAppointment}) => {
           <div className="form-group">
             <label>Paciente</label>
             <input type="text" className="form-control" value={appointmentData.patient.name} disabled />
+            <input type="hidden" {...register("patientId")} value={appointmentData.patient.id} />
           </div>
           <div className="form-group">
-            <Calendario />
-            <input type="text" className="form-control" value={appointmentData.dateAppointment} />
+            <Calendario handleSelectDate={handleSelectDate} editDate={appointmentData?.dateAppointmentStart} />
+            <input type="text" name="dateAppointmentStart" className="form-control" {...register("dateAppointmentStart")} />
+            <input type="text" name="dateAppointmentEnd" className="form-control" {...register("dateAppointmentEnd")} />
           </div>
           <div className="form-group">
             <label>Estatus</label>
-            <input
-              name="status"
-              type="text"
-              {...register("status")}
-              className={`form-control ${errors.status ? "is-invalid" : ""}`}
-            />
+            <select className="form-control" {...register("status")}>
+              <option value="Pendiente">Pendiente</option>
+              <option value="Confirmada">Confirmada</option>
+              <option value="Cancelada">Cancelada</option>
+            </select>
             <div className="invalid-feedback">{errors.status?.message}</div>
           </div>
           <div className="form-group">
-            <label>observations</label>
-            <input
-              name="observations"
-              type="text"
-              {...register("observations")}
-              className={`form-control ${errors.observations ? "is-invalid" : ""}`}
-            />
+            <label>Observations</label>
+            <textarea {...register("observations")} className={`form-control ${errors.observations ? "is-invalid" : ""}`} />
             <div className="invalid-feedback">{errors.observations?.message}</div>
           </div>
           <button

@@ -20,10 +20,14 @@ const AppointmentEdit = () => {
 
     return (
         <>
-            <h1>Editar Cita</h1>
+            
             {isLoading && <p>Loading...</p>}
             {error && <p>{error}</p>}
-            {data && <AppointmentForm appointmentData={data} handleAppointment={handleSubmit} />}
+            {data && 
+            <>
+            <h1>Editar Cita nº {data.id}</h1>
+            <AppointmentForm appointmentData={data} handleAppointment={handleSubmit} />
+            </>}
         </>
     )
 }

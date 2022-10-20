@@ -1,5 +1,6 @@
 import {useGetAppointmentQuery} from '../_store/appointment.slice'
 import { useParams } from "react-router-dom";
+import {dateToHuman} from "../_helpers/localizeDate";
 export { Appointment };
 
 function Appointment() {
@@ -13,9 +14,9 @@ function Appointment() {
             {error && <p>{error}</p>}
             {data && <div>
                 <p>{data.id}</p>
-                <p>{data.idPatient}</p>
-                <p>{data.dateAppointment}</p>
-                <p>{data.timeAppointment}</p>
+                <p>{data.patient.name}</p>
+                <p>{dateToHuman(data.dateAppointmentStart) }</p>
+                <p>{dateToHuman(data.dateAppointmentEnd) }</p>
                 <p>{data.status}</p>
             </div>}
         </div>

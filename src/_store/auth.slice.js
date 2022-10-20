@@ -49,7 +49,7 @@ function createExtraActions() {
     function login() {
         return createAsyncThunk(
             `${name}/login`,
-            async ({ username, password }) => await axios.post(`${baseUrl}/login`, { username, password })
+            async ({ email, password }) => await axios.post(`${baseUrl}/login`, { email, password })
         );
     }
 }
@@ -71,7 +71,7 @@ function createExtraReducers() {
                 history.navigate('/');
             },
             [rejected]: (state, action) => {
-                state.error = action.error;
+                state.error = action.payload.error;
             }
         };
     }

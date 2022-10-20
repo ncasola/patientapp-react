@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { addToast } from '../_store/toast.slice';
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from 'react';
+import moment from 'moment/moment';
+
 const Appointments = () => {
     const [totalRows, setTotalRows] = useState(0);
     const [size, setSize] = useState(10);
@@ -28,7 +30,7 @@ const Appointments = () => {
         },
         {
             name: 'Fecha',
-            selector: row => row.dateAppointment,
+            selector: row => moment(row.dateAppointmentStart).format('DD/MM/YYYY') + ' ' + moment(row.dateAppointmentStart).format('HH:mm') + ' - ' + moment(row.dateAppointmentEnd).format('HH:mm'),
         },
         {
             name: 'Estatus',
