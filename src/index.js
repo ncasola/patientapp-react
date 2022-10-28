@@ -5,8 +5,6 @@ import { BrowserRouter } from "react-router-dom";
 import { store } from "./_store";
 import { App } from "./App";
 import "./index.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const container = document.getElementById("root");
 const root = createRoot(container);

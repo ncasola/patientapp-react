@@ -6,33 +6,29 @@ import {
   useLocation,
 } from "react-router-dom";
 import { history } from "_helpers";
-import { Nav, PrivateRoute } from "_components";
-import { Home } from "home";
-import { Login } from "login";
-import { removeToast } from "./_store/toast.slice";
-import PatientRoutes from "_patients/PatientRoutes";
-import AppointmentRoutes from "_appointment/AppointmentRoutes";
-
-import { useSelector, useDispatch } from "react-redux";
-import { Toast } from "react-bootstrap";
-import ToastContainer from 'react-bootstrap/ToastContainer';
+import { PrivateRoute } from "_components";
+import { Home } from "_pages/home";
+import { Login } from "_pages/login";
+import { Header } from "_components/_layout/Header";
+import ToastList from "_components/ToastList";
+import PatientRoutes from "_pages/_patients/PatientRoutes";
+import AppointmentRoutes from "_pages/_appointment/AppointmentRoutes";
+/* PLOP_INJECT_IMPORT */
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 
 export { App };
 
 function App() {
   history.navigate = useNavigate();
   history.location = useLocation();
-  const toasts = useSelector((state) => state.toast.toasts);
-  const dispatch = useDispatch();
-
-
+  library.add(fas);
   return (
-    <div className="app-container bg-light">
-      <Nav />
-      <div className="container pt-4 pb-4">
+<>
+      <Header />
+      <div class="container app">
         <Routes>
           <Route
-            // home page
             path="/"
             element={
               <PrivateRoute>
@@ -40,30 +36,15 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<Navigate to="/" />} />
           {PatientRoutes}
           {AppointmentRoutes}
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-        <ToastContainer position="bottom-start">
-        {toasts.map((toast) => (
-          <Toast
-            key={toast.id}
-            onClose={() => dispatch(removeToast(toast.id))}
-            delay={3000}
-            bg={toast.type}
-            autohide
-          >
-            <Toast.Header>
-              <strong className="mr-auto">{toast.title}</strong>
-            </Toast.Header>
-            <Toast.Body>
-              <p>{toast.text}</p>
-            </Toast.Body>
-          </Toast>
-        ))}
-        </ToastContainer>
+          </Routes>
+        <ToastList />
       </div>
-    </div>
+    </>
   );
 }

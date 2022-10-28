@@ -1,0 +1,17 @@
+import {{pascalCase name}} from "./{{pascalCase name}}";
+
+import { Route } from "react-router-dom";
+import { PrivateRoute } from "_components/_layout/PrivateRoute";
+
+const {{name}}Array =  [
+      <Route
+        path="/{{name}}"
+        element={
+          <PrivateRoute>
+            <{{pascalCase name}} />
+          </PrivateRoute>
+        }
+      />,
+    ];
+
+export default {{name}}Array;

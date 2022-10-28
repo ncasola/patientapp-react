@@ -1,16 +1,21 @@
 import React from "react";
-import { Calendar, Views, momentLocalizer } from "react-big-calendar";
-import { useGetAllAppointmentsQuery } from "../_store/appointment.slice";
-import moment from "moment";
+import { Calendar, Views, luxonLocalizer  } from "react-big-calendar";
+import { useGetAllAppointmentsQuery } from "../_store/appointment.api";
+import { DateTime, Settings } from 'luxon'
 import { useState, useEffect, useCallback, useMemo } from "react";
 
-const Calendario = ({ handleSelectDate, editDate }) => {
-  const localizer = momentLocalizer(moment);
+const Calendario = ({ handleSelectDate }) => {
+  Settings.defaultZone = 'Etc/GMT';
+  Settings.defaultLocale = 'es-ES';
+  const localizer = luxonLocalizer(DateTime, { firstDayOfWeek: 1 })
   const { data } = useGetAllAppointmentsQuery();
   const [events, setEvents] = useState([]);
-
     const handleSelectSlot = useCallback(
-      ({ start, end }) => {
+      (slotInfo) => {
+        if (slotInfo.slots && slotInfo.slots.length <= 1) {
+          return false;
+        }
+        const { start, end } = slotInfo;
         setEvents((prev) => prev.filter((e) => e.title !== "Nueva Cita"));
         setEvents((prev) => [...prev, { start, end, title: "Nueva Cita", bagroundColor: 'red' }]);
         handleSelectDate({ start, end });
@@ -19,10 +24,10 @@ const Calendario = ({ handleSelectDate, editDate }) => {
     )
     const { defaultDate, scrollToTime } = useMemo(
       () => ({
-        defaultDate: editDate?.dateAppointmentStart || new Date(),
+        defaultDate: new Date(),
         scrollToTime: new Date(),
       }),
-      [editDate]
+      []
     )
   useEffect(() => {
     if (data) {
@@ -44,7 +49,7 @@ const Calendario = ({ handleSelectDate, editDate }) => {
       <Calendar
         localizer={localizer}
         events={events}
-        defaultView={Views.AGENDA}
+        defaultView={Views.WORK_WEEK}
         style={{ height: 500 }}
         onSelectSlot={handleSelectSlot}
         selectable
@@ -52,8 +57,9 @@ const Calendario = ({ handleSelectDate, editDate }) => {
         scrollToTime={scrollToTime}
         eventPropGetter={(event) => {
           const backgroundColor = event.backgroundColor;
-          return { style: { "background-color:":  backgroundColor } }
+          return { style: { backgroundColor:  backgroundColor } }
         }}
+        views={['work_week', 'agenda', 'month']}
       />
     </>
   );

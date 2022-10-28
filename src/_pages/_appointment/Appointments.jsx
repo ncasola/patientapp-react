@@ -1,18 +1,20 @@
 import React from 'react'
-import {useGetAppointmentsQuery, useDeleteAppointmentMutation} from '../_store/appointment.slice'
+import {useGetAppointmentsQuery, useDeleteAppointmentMutation} from '_store/appointment.api'
 import DataTable from 'react-data-table-component';
 import { Link } from 'react-router-dom';
-import { addToast } from '../_store/toast.slice';
+import { addToast } from '_store/toast.slice';
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from 'react';
-import moment from 'moment/moment';
+import { DateTime, Settings } from 'luxon'
+import SubHeader from '_components/_layout/SubHeader';
 
 const Appointments = () => {
     const [totalRows, setTotalRows] = useState(0);
     const [size, setSize] = useState(10);
     const [pageNum, setPageNum] = useState(0);
     const { data, error, isLoading } = useGetAppointmentsQuery({pageNum, size});
-
+    Settings.defaultZone = 'Etc/GMT';
+    Settings.defaultLocale = 'es-ES';
     const [deleteAppointment] = useDeleteAppointmentMutation();
     const dispatch = useDispatch();
     const handleRemoveButton = async (id) => {
@@ -30,7 +32,8 @@ const Appointments = () => {
         },
         {
             name: 'Fecha',
-            selector: row => moment(row.dateAppointmentStart).format('DD/MM/YYYY') + ' ' + moment(row.dateAppointmentStart).format('HH:mm') + ' - ' + moment(row.dateAppointmentEnd).format('HH:mm'),
+            // date in format day and hour
+            selector: row => DateTime.fromISO(row.dateAppointmentStart).toFormat('dd LLL HH:mm') + ' - ' + DateTime.fromISO(row.dateAppointmentEnd).toFormat('HH:mm'),
         },
         {
             name: 'Estatus',
@@ -67,11 +70,13 @@ const Appointments = () => {
     }, [data]);
 
   return (
-    <div>
-        <h1>Citas</h1>
-        {isLoading && <p>Loading...</p>}
-        {error && <p>{error}</p>}
-        {data && <DataTable
+                <div className="row mt-4 gy-5">
+                <div className="col-12">
+                <SubHeader title="Citas" ruta="/" />
+                {isLoading && <p>Loading...</p>}
+                {error && <p>{error}</p>}
+                <div className="form_container">
+                {data && <DataTable
             columns={columns}
             data={data.items}
 			progressPending={isLoading}
@@ -83,6 +88,8 @@ const Appointments = () => {
             highlightOnHover
         />}
         </div>
+            </div>
+            </div>
   )
 }
 

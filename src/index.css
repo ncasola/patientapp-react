@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import "react-big-calendar/lib/css/react-big-calendar.css";
+
+/* override browser default */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    background-color: antiquewhite;
+}
+
+/* include border and padding in element width and height */
+* {
+  box-sizing: border-box;
+}
+
+/* full-sized  container that fills up the page */
+.app {
+    height: 100vh;
+}
+
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.form_container {
+    width: 100%;
+    background: #ffffff;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    display: block;
+    padding: 2rem 3rem;
+    margin-bottom: 2rem;
+}
+
+.container_app {
+    background-color: #F8F8F8
+}
+
+#basic-nav-dropdown {
+    color: #ffffff;
+    background-color: #577BC6;
+    border-radius: 5px;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+}
+
+.button-actions {
+    color: #ffffff;
+    border-radius: 5px;
+    padding: 10px;
+    font-family: 'Montserrat';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 17px;
+color: #FFFFFF;
+}
+
+.button-actions:hover {
+    color: #ffffff;
+    background-color: #D37708;
+}
+.button-danger {
+    background-color: #F44336;
+}
+
+.button-primary {
+    background-color: #577BC6;
+}
+
+.button-step {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+    color: #577bc6;
+    border: 3px solid #577bc6;
+    box-sizing: border-box;
+    border-radius: 100px;
+    padding: 10px 20px;
+}
+
+.label_form {
+    color: #D37708;
+    font-weight: 700;
+}
+
+.step_header {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 22px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #D37708;
+}
+
+.indexedStep {
+    color: white;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    background-color: rgba(211, 211, 211, 0.8);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .indexedStep.accomplished {
+    background-color: #D37708;
+  }
+
+input[type="radio"], input[type="checkbox"] {
+	border: 2px solid #D37708;
+    border-color: #D37708;  
+}
+
+input[type="radio"]:checked, input[type="checkbox"]:checked {
+	background-color: #D37708 !important;
+    border-color: #D37708 !important;
+}
+
+textarea, input {
+    border: 1px solid #D37708 !important;
+}
+
+.nav-tabs .nav-item .nav-link, .nav-tabs .nav-link {
+    color: #414141;
+    font-weight: 700;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: orangered;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.nav-tabs:hover {
+    /* clear all */
+    border: none;
+    background-color: transparent;
+}
+
+.nav-tabs {
+    border-bottom: none;
+}

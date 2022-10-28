@@ -1,12 +1,13 @@
 import React from 'react'
-import {useGetPatientsQuery, useDeletePatientMutation} from '../_store/patient.slice'
+import {useGetPatientsQuery, useDeletePatientMutation} from '_store/patient.api'
 import DataTable from 'react-data-table-component';
 import { Link, useNavigate } from 'react-router-dom';
-import { addToast } from '../_store/toast.slice';
+import { addToast } from '_store/toast.slice';
 import { useDispatch } from "react-redux";
 import { useEffect, useState, useMemo } from 'react';
 import SubHeaderComponent from '_components/_layout/SubHeaderComponent';
 import debounce from 'lodash.debounce';
+import SubHeader from '_components/_layout/SubHeader';
 
 const Patients = () => {
     // states
@@ -93,9 +94,10 @@ const Patients = () => {
     });
 
   return (
-    <div>
-        <h1>Patients</h1>
-        <Link className='btn btn-info' to={`/patient/add`}>Añadir paciente</Link>
+    <div className="row mt-4 gy-5">
+    <div className="col-12">
+    <SubHeader title="Pacientes" ruta="/" />
+    <div className="form_container">
         {isLoading && <p>Loading...</p>}
         {error && <p>{error}</p>}
         {data && <DataTable
@@ -114,6 +116,8 @@ const Patients = () => {
             persistTableHead
         />}
         </div>
+    </div>
+    </div>
   )
 }
 

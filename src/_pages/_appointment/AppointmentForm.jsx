@@ -3,10 +3,9 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import moment from "moment/moment";
 import { ErrorMessage } from "@hookform/error-message";
 import Calendario from "_components/Calendario";
-import {dateToHuman} from "../_helpers/localizeDate";
+import { dateToSql} from "_helpers/localizeDate";
 
 const AppointmentForm = ({appointmentData, handleAppointment}) => {
   // form validation rules
@@ -20,11 +19,12 @@ const AppointmentForm = ({appointmentData, handleAppointment}) => {
   const formOptions = { resolver: yupResolver(validationSchema) };
 
   // get functions to build form with useForm() hook
-  const { control, register, watch, handleSubmit, reset, formState } = useForm(formOptions);
+  const { register, watch, handleSubmit, reset, formState } = useForm(formOptions);
   const { errors, isSubmitting } = formState;
   useEffect(() => {
+    console.log("appointmentData", appointmentData);
     if(appointmentData){
-      reset({ ...appointmentData, dateAppointmentStart: dateToHuman(appointmentData.dateAppointmentStart), dateAppointmentEnd: dateToHuman(appointmentData.dateAppointmentEnd)})
+      reset(appointmentData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appointmentData]);
@@ -34,10 +34,11 @@ const AppointmentForm = ({appointmentData, handleAppointment}) => {
   };
 
   const handleSelectDate = ({start, end}) => {
+    console.log(start);
     reset({
       ...watch(),
-      dateAppointmentStart: dateToHuman(start),
-      dateAppointmentEnd: dateToHuman(end),
+      dateAppointmentStart: dateToSql(start),
+      dateAppointmentEnd: dateToSql(end),
     });
   }
 
@@ -54,16 +55,24 @@ const AppointmentForm = ({appointmentData, handleAppointment}) => {
           }
         />
         <form onSubmit={handleSubmit(onSubmit)}>
+        <div class="row g-3">
+  <div class="col">
+        <div className="form-group">
+            <Calendario handleSelectDate={handleSelectDate} />
+            <input type="text" name="dateAppointmentStart" {...register("dateAppointmentStart")} />
+            <input type="text" name="dateAppointmentEnd" {...register("dateAppointmentEnd")} />
+          </div>
+ </div>
+ </div>
+ <div class="row g-3">
+ <div class="col">
           <div className="form-group">
             <label>Paciente</label>
             <input type="text" className="form-control" value={appointmentData.patient.name} disabled />
             <input type="hidden" {...register("patientId")} value={appointmentData.patient.id} />
           </div>
-          <div className="form-group">
-            <Calendario handleSelectDate={handleSelectDate} editDate={appointmentData?.dateAppointmentStart} />
-            <input type="text" name="dateAppointmentStart" className="form-control" {...register("dateAppointmentStart")} />
-            <input type="text" name="dateAppointmentEnd" className="form-control" {...register("dateAppointmentEnd")} />
           </div>
+  <div class="col">
           <div className="form-group">
             <label>Estatus</label>
             <select className="form-control" {...register("status")}>
@@ -73,11 +82,14 @@ const AppointmentForm = ({appointmentData, handleAppointment}) => {
             </select>
             <div className="invalid-feedback">{errors.status?.message}</div>
           </div>
-          <div className="form-group">
+          </div>
+          <div className="form-group mb-4">
             <label>Observations</label>
             <textarea {...register("observations")} className={`form-control ${errors.observations ? "is-invalid" : ""}`} />
             <div className="invalid-feedback">{errors.observations?.message}</div>
           </div>
+          </div>
+          <div class="d-grid gap-2">
           <button
             disabled={isSubmitting}
             type="submit"
@@ -88,6 +100,7 @@ const AppointmentForm = ({appointmentData, handleAppointment}) => {
             )}
             Enviar
           </button>
+</div>
         </form>
         </>
   );

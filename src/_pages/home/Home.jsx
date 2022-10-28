@@ -7,8 +7,11 @@ function Home() {
     const { user: authUser } = useSelector(x => x.auth);
 
     return (
-        <div>
-            <h1>Hi {authUser?.email}!</h1>
+        <div className="row mt-4 gy-5">
+        <div className="col-12">
+            <h1>Home</h1>
+            <p>{authUser.name}</p>
+        </div>
         </div>
     );
 }

@@ -2,11 +2,12 @@ import React from 'react'
 import {
   useUpdateAppointmentMutation,
   useGetAppointmentQuery,
-} from "../_store/appointment.slice";
+} from "_store/appointment.api";
 import AppointmentForm from './AppointmentForm';
 import { history } from '_helpers';
 import { useParams } from 'react-router-dom';
-import { addToast } from "../_store/toast.slice";
+import { addToast } from "_store/toast.slice";
+import SubHeader from '_components/_layout/SubHeader';
 
 const AppointmentEdit = () => {
     const [updateAppointment, { isLoading, error }] = useUpdateAppointmentMutation();
@@ -19,16 +20,16 @@ const AppointmentEdit = () => {
     }
 
     return (
-        <>
-            
+        <div className="row mt-4 gy-5">
+            <div className="col-12">
+            <SubHeader title="Editar Cita" ruta="/appointments" />
+            <div className="form_container">
+            {data && <AppointmentForm appointmentData={data} handleAppointment={handleSubmit} />}
             {isLoading && <p>Loading...</p>}
             {error && <p>{error}</p>}
-            {data && 
-            <>
-            <h1>Editar Cita nº {data.id}</h1>
-            <AppointmentForm appointmentData={data} handleAppointment={handleSubmit} />
-            </>}
-        </>
+            </div>
+            </div>
+        </div>
     )
 }
 

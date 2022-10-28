@@ -6,7 +6,7 @@ import AppointmentEdit from "./AppointmentEdit";
 import AppointmentAdd from "./AppointmentAdd";
 
 import { Route } from "react-router-dom";
-import { PrivateRoute } from "../_components/_layout/PrivateRoute";
+import { PrivateRoute } from "_components/_layout/PrivateRoute";
 
 const routeArray = [
       <Route

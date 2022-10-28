@@ -1,11 +1,10 @@
-import moment from "moment";
-
+import { DateTime, Settings } from 'luxon'
 const dateToHuman = (date) => {
-    return moment(date).format("DD/MM/YYYY HH:mm");
+    Settings.defaultZone = 'Etc/GMT';
+    return DateTime.fromISO(date).toLocaleString(DateTime.DATETIME_SHORT);
 }
-
 const dateToSql = (date) => {
-    return moment(date).format("YYYY-MM-DD HH:mm:ss");
+    Settings.defaultZone = 'Etc/GMT';
+    return DateTime.fromJSDate(date).toISO();
 }
-
 export { dateToHuman, dateToSql };
