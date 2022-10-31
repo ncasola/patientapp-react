@@ -1,96 +1,142 @@
-import React from 'react'
-import {useGetAppointmentsQuery, useDeleteAppointmentMutation} from '_store/appointment.api'
-import DataTable from 'react-data-table-component';
-import { Link } from 'react-router-dom';
+import React from "react";
+import SubHeader from "_components/_layout/SubHeader";
+import { Calendar, Views, luxonLocalizer } from "react-big-calendar";
+import {
+  useGetAppointmentsQuery,
+} from "_store/appointment.api";
+import { DateTime, Settings } from "luxon";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import AppointmentAdd from "./AppointmentAdd";
+import AppointmentEdit from "./AppointmentEdit";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import Button from "react-bootstrap/Button";
+import { dateToSql} from "_helpers/localizeDate";
 import { addToast } from '_store/toast.slice';
 import { useDispatch } from "react-redux";
-import { useEffect, useState } from 'react';
-import { DateTime, Settings } from 'luxon'
-import SubHeader from '_components/_layout/SubHeader';
 
 const Appointments = () => {
-    const [totalRows, setTotalRows] = useState(0);
-    const [size, setSize] = useState(10);
-    const [pageNum, setPageNum] = useState(0);
-    const { data, error, isLoading } = useGetAppointmentsQuery({pageNum, size});
-    Settings.defaultZone = 'Etc/GMT';
-    Settings.defaultLocale = 'es-ES';
-    const [deleteAppointment] = useDeleteAppointmentMutation();
-    const dispatch = useDispatch();
-    const handleRemoveButton = async (id) => {
-        await deleteAppointment(id);
-        dispatch(addToast({ message: 'Cita eliminada', type: 'success', title: 'Eliminado' }));
+  Settings.defaultZone = "Etc/GMT";
+  Settings.defaultLocale = "es-ES";
+  const localizer = luxonLocalizer(DateTime, { firstDayOfWeek: 1 });
+  const { data, error, isLoading } = useGetAppointmentsQuery();
+  const dispatch = useDispatch();
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [idModal, setIdModal] = useState(null);
+  const [events, setEvents] = useState([]);
+  const [showModalAdd, setShowModalAdd] = useState(false);
+  const [showModalEdit, setShowModalEdit] = useState(false);
+  const [searchPatient, setSearchPatient] = useState("");
+
+  const buildEvents = useCallback(
+    (appointments) => {
+      const eventsList = appointments.map((appointment) => {
+        return {
+          title: `Cita nº ${appointment.id} - ${appointment.status} - Paciente nº ${appointment.patient.id}-${appointment.patient.name}`,
+          start: new Date(appointment.dateAppointmentStart),
+          end: new Date(appointment.dateAppointmentEnd),
+          allDay: false,
+          appointment: appointment,
+        };
+      });
+      setEvents(eventsList);
+    },
+    [setEvents]
+  );
+
+  const handleSelectSlot = useCallback(
+    (slotInfo) => { 
+      const { start, end } = slotInfo;
+      setStartDate(dateToSql(start));
+      setEndDate(dateToSql(end));
+      setShowModalAdd(true);
+    },
+    [setShowModalAdd, setStartDate, setEndDate]
+  );
+
+  const onSelectEvent = useCallback(
+    (calEvent) => {
+      const id = calEvent.appointment.id;
+      setIdModal(id);
+      setShowModalEdit(true);
+    },
+    [setShowModalEdit, setIdModal]
+  );
+
+  const searchFormPatient = () => {
+    if (searchPatient !== "") {
+      const filteredEvents = events.filter((event) => {
+        return event.appointment.patient.name
+          .toLowerCase()
+          .includes(searchPatient.toLowerCase());
+      });
+      if(filteredEvents.length === 0){
+        dispatch(addToast({title: "Fallo", message: 'No se han encontrado resultados', type: 'warning'}));
+      } else {
+        setEvents(filteredEvents);
+      }      
     }
-    const columns = [
-        {
-            name: '#',
-            selector: row => row.id,
-        },
-        {
-            name: 'Paciente',
-            selector: row => row.patient.name,
-        },
-        {
-            name: 'Fecha',
-            // date in format day and hour
-            selector: row => DateTime.fromISO(row.dateAppointmentStart).toFormat('dd LLL HH:mm') + ' - ' + DateTime.fromISO(row.dateAppointmentEnd).toFormat('HH:mm'),
-        },
-        {
-            name: 'Estatus',
-            selector: row => row.status,
-        },
-        {
-            cell: row => 
-            <button className='btn btn-danger' onClick={() => handleRemoveButton(row.id)}>X</button>,
-            button: true,
-        },
-        {
-            cell: row => <Link className='btn btn-info' to={`/appointment/edit/${row.id}`}>Editar</Link>,
-            button: true,
-        },
-        {
-            cell: row => <Link className='btn btn-info' to={`/appointment/${row.id}`}>Ver</Link>,
-            button: true,
-        }
-    ];
+  };
 
-    const handlePageChange = page => {
-        setPageNum(page);
-    };
+  const { defaultDate, scrollToTime } = useMemo(
+    () => ({
+      defaultDate: new Date(),
+      scrollToTime: new Date(),
+    }),
+    []
+  );
+  useEffect(() => {
+    if (data) {
+      buildEvents(data.items);
+    }
+  }, [data, buildEvents]);
 
-	const handlePerRowsChange = async (newPerPage, page) => {	
-        setSize(newPerPage);
-        setPageNum(page);
-	};
-
-    useEffect(() => {
-        if (data) {
-            setTotalRows(data.totalItems);
-        }
-    }, [data]);
 
   return (
-                <div className="row mt-4 gy-5">
-                <div className="col-12">
-                <SubHeader title="Citas" ruta="/" />
-                {isLoading && <p>Loading...</p>}
-                {error && <p>{error}</p>}
-                <div className="form_container">
-                {data && <DataTable
-            columns={columns}
-            data={data.items}
-			progressPending={isLoading}
-			pagination
-			paginationServer
-			paginationTotalRows={totalRows}
-			onChangeRowsPerPage={handlePerRowsChange}
-			onChangePage={handlePageChange}
-            highlightOnHover
-        />}
+    <div className="row mt-4 gy-5">
+      <div className="col-12">
+        <SubHeader title="Citas" ruta="/" />
+        {isLoading && <p>Loading...</p>}
+        {error && <p>{error}</p>}
+        <AppointmentAdd
+          startDate={startDate}
+          endDate={endDate}
+          show={showModalAdd}
+          setShow={setShowModalAdd}
+        />
+        <AppointmentEdit id={idModal} show={showModalEdit} setShow={setShowModalEdit} />
+        <div className="form_container">
+          <InputGroup className="mb-3">
+            <Form.Control
+              type="text"
+              placeholder="Buscar paciente"
+              value={searchPatient}
+              onChange={(e) => setSearchPatient(e.target.value)}
+            />
+              <Button variant="outline-secondary" onClick={() => searchFormPatient()}>
+                Buscar
+              </Button>
+          </InputGroup>
+          {events.length > 0 && (
+            <Calendar
+              localizer={localizer}
+              events={events}
+              defaultView={Views.WORK_WEEK}
+              style={{ height: 500 }}
+              onSelectSlot={handleSelectSlot}
+              selectable
+              defaultDate={defaultDate}
+              scrollToTime={scrollToTime}
+              views={["work_week", "agenda", "day"]}
+              onSelectEvent={onSelectEvent}
+              showAllEvents
+            />
+          )}
         </div>
-            </div>
-            </div>
-  )
-}
+      </div>
+    </div>
+  );
+};
 
-export default Appointments
+export default Appointments;

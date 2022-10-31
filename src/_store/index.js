@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { patientApi } from "./patient.api";
 import { appointmentApi } from "./appointment.api";
 import { authApi } from "./auth.api";
+import { userApi } from "./user.api";
 import toastReducer from "./toast.slice";
 import authReducer from "./auth.slice";
 
@@ -11,6 +12,7 @@ export * from "./patient.api";
 export * from "./toast.slice";
 export * from "./appointment.api";
 export * from "./auth.api";
+export * from "./user.api";
 
 export const store = configureStore({
   reducer: {
@@ -19,10 +21,12 @@ export const store = configureStore({
     [patientApi.reducerPath]: patientApi.reducer,
     [appointmentApi.reducerPath]: appointmentApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(patientApi.middleware)
       .concat(appointmentApi.middleware)
       .concat(authApi.middleware)
+      .concat(userApi.middleware),
 });

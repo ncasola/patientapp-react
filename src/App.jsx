@@ -14,6 +14,7 @@ import ToastList from "_components/ToastList";
 import PatientRoutes from "_pages/_patients/PatientRoutes";
 import AppointmentRoutes from "_pages/_appointment/AppointmentRoutes";
 /* PLOP_INJECT_IMPORT */
+import UsersRoutes from './_pages/_users/UsersRoutes';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 
@@ -40,6 +41,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" />} />
           {PatientRoutes}
           {AppointmentRoutes}
+          {UsersRoutes}
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<Navigate to="/" />} />
           </Routes>

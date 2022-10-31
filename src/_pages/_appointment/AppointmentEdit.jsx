@@ -2,34 +2,41 @@ import React from 'react'
 import {
   useUpdateAppointmentMutation,
   useGetAppointmentQuery,
+  useDeleteAppointmentMutation,
 } from "_store/appointment.api";
 import AppointmentForm from './AppointmentForm';
-import { history } from '_helpers';
-import { useParams } from 'react-router-dom';
 import { addToast } from "_store/toast.slice";
-import SubHeader from '_components/_layout/SubHeader';
+import { Button, Modal } from 'react-bootstrap';
 
-const AppointmentEdit = () => {
-    const [updateAppointment, { isLoading, error }] = useUpdateAppointmentMutation();
-    const { id } = useParams();
+const AppointmentEdit = ({id, show, setShow}) => {
+    const [updateAppointment] = useUpdateAppointmentMutation();
+    const [deleteAppointment] = useDeleteAppointmentMutation();
     const { data } = useGetAppointmentQuery(id);
     const handleSubmit = async (newAppointment) => {
         await updateAppointment({id, ...newAppointment});
-        addToast({message: 'Paciente guardado', type: 'success', title: 'Exito'});
-        history.navigate('/appointments');
+        addToast({message: 'Cita guardada', type: 'success', title: 'Exito'});
+        setShow(false);
+    }
+    const handleDelete = async () => {
+        await deleteAppointment(id);
+        addToast({message: 'Cita eliminada', type: 'success', title: 'Exito'});
+        setShow(false);
     }
 
+    const handleClose = () => setShow(false)
+
     return (
-        <div className="row mt-4 gy-5">
-            <div className="col-12">
-            <SubHeader title="Editar Cita" ruta="/appointments" />
-            <div className="form_container">
-            {data && <AppointmentForm appointmentData={data} handleAppointment={handleSubmit} />}
-            {isLoading && <p>Loading...</p>}
-            {error && <p>{error}</p>}
-            </div>
-            </div>
-        </div>
+        <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Editar Cita</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            {data && <AppointmentForm appointmentData={data} handleAppointment={handleSubmit} />} 
+        </Modal.Body>
+        <Modal.Footer>
+            <Button variant="danger" size='lg' onClick={handleDelete}>Eliminar</Button>
+        </Modal.Footer>
+      </Modal>
     )
 }
 

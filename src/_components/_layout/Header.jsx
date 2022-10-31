@@ -22,27 +22,38 @@ function Header() {
     <Navbar bg="dark" expand="lg">
       <Container>
         <Navbar.Brand>
-        <img
-              src="https://holasoft.es/wp-content/uploads/2017/08/logo-horizontal-700.png"
-              width="100"
-              alt="React Bootstrap logo"
-            />
+          <img
+            src="https://holasoft.es/wp-content/uploads/2017/08/logo-horizontal-700.png"
+            width="100"
+            alt="React Bootstrap logo"
+          />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto mb-2 mb-lg-0">
-            <NavDropdown title={authUser?.email} className="dropdown_button" id="basic-nav-dropdown">
-            <LinkContainer to="/home">
+            <NavDropdown
+              title={authUser?.email}
+              className="dropdown_button"
+              id="basic-nav-dropdown"
+            >
+              <LinkContainer to="/home">
                 <NavDropdown.Item>Inicio</NavDropdown.Item>
-            </LinkContainer>
-            <LinkContainer to="/patients">
+              </LinkContainer>
+              <LinkContainer to="/patients">
                 <NavDropdown.Item>Pacientes</NavDropdown.Item>
-            </LinkContainer>
-            <LinkContainer to="/appointments">
+              </LinkContainer>
+              <LinkContainer to="/appointments">
                 <NavDropdown.Item>Citas</NavDropdown.Item>
-            </LinkContainer>
+              </LinkContainer>
+              {authUser.roles.some((x) => x.name === "admin") && (
+                <LinkContainer to="/users">
+                  <NavDropdown.Item>Usuarios</NavDropdown.Item>
+                </LinkContainer>
+              )}
               <NavDropdown.Divider />
-              <NavDropdown.Item onClick={logout}>Cerrar sesión</NavDropdown.Item>
+              <NavDropdown.Item onClick={logout}>
+                Cerrar sesión
+              </NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

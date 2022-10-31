@@ -8,19 +8,15 @@ export const appointmentApi = createApi({
   tagTypes: ['Appointment'],
   endpoints: (builder) => ({
     getAppointments: builder.query({
-        query: ({pageNum, size}) => `/appointments?page=${pageNum}&size=${size}`,
+        query: () => `/appointments`,
         providesTags: (result, error, arg) =>
         result
-          ? [...result.items.map(({ id }) => ({ type: 'Appointment', id })), { type: 'Appointment', id: 'PARTIAL-LIST' }]
-          : [{ type: 'Appointment', id: 'PARTIAL-LIST' }],
+          ? [...result.items.map(({ id }) => ({ type: 'Appointment', id })), 'Appointment']
+          : ['Appointment'],
     }),
     getAppointment: builder.query({
         query: (id) => `/appointments/${id}`,
         providesTags: (result, error, arg) => [{ type: 'Appointment', id: arg.id }],
-    }),
-    getAllAppointments: builder.query({
-        query: () => `/appointments/all`,
-        providesTags: (result, error, arg) => [...result.map(({ id }) => ({ type: 'Appointment', id }))],
     }),
     createAppointment: builder.mutation({
         query: (body) => ({
@@ -44,12 +40,11 @@ export const appointmentApi = createApi({
             method: "DELETE",
         }),
         invalidatesTags: (result, error, arg) => [
-            { type: 'Appointment', id: arg.id },
-            { type: 'Appointment', id: 'PARTIAL-LIST' },
+            { type: 'Appointment', id: arg.id }
         ],
     }),
   }),
 });
 
 // Export hooks for usage in functional components
-export const { useGetAppointmentsQuery, useGetAllAppointmentsQuery, useGetAppointmentQuery, useCreateAppointmentMutation, useUpdateAppointmentMutation, useDeleteAppointmentMutation } = appointmentApi;
+export const { useGetAppointmentsQuery, useGetAppointmentQuery, useCreateAppointmentMutation, useUpdateAppointmentMutation, useDeleteAppointmentMutation } = appointmentApi;

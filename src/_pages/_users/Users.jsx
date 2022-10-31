@@ -1,5 +1,5 @@
 import React from 'react'
-import {useGetPatientsQuery, useDeletePatientMutation} from '_store/patient.api'
+import {useGetUsersQuery, useDeleteUserMutation} from '_store/user.api'
 import DataTable from 'react-data-table-component';
 import { Link, useNavigate } from 'react-router-dom';
 import { addToast } from '_store/toast.slice';
@@ -11,51 +11,40 @@ import SubHeader from '_components/_layout/SubHeader';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
-const Patients = () => {
+const Users = () => {
     // states
     const [totalRows, setTotalRows] = useState(0);
     const [size, setSize] = useState(10);
     const [pageNum, setPageNum] = useState(0);
     const [filterText, setFilterText] = useState('');
-    const { data, error, isLoading } = useGetPatientsQuery({pageNum, size, filterText});
+    const { data, error, isLoading } = useGetUsersQuery({pageNum, size, filterText});
     const columns = [
         {
             name: '#',
             selector: row => row.id,
         },
         {
-            name: 'Nombre',
-            selector: row => row.name,
-        },
-        {
-            name: 'Apellido',
-            selector: row => row.lastname,
-        },
-        {
             name: 'Email',
             selector: row => row.email,
-        },
-        {
-            name: 'Telefono',
-            selector: row => row.phone,
         },
         {
             name: 'Acciones',
             cell: row => 
             <ButtonGroup>
-                <Button variant="primary" size="sm" as={Link} to={`/patient/${row.id}`}>Ver</Button>
+                <Button variant="primary" size="sm" as={Link} to={`/user/${row.id}`}>Ver</Button>
+                <Button variant="primary" size="sm" as={Link} to={`/user/edit/${row.id}`}>Editar</Button>
                 <Button variant="danger" size="sm" onClick={() => handleDelete(row.id)}>Eliminar</Button>
             </ButtonGroup>
         }
     ];
     // hooks
     const navigate = useNavigate();
-    const [deletePatient] = useDeletePatientMutation();
+    const [deleteUser] = useDeleteUserMutation();
     const dispatch = useDispatch();
     // functions
     const handleDelete = async (id) => {
-        await deletePatient(id);
-        dispatch(addToast({ message: 'Paciente eliminado', type: 'success', title: 'Eliminado' }));
+        await deleteUser(id);
+        dispatch(addToast({ message: 'Usuario eliminado', type: 'success', title: 'Eliminado' }));
     }
 
     const handlePageChange = page => {
@@ -86,9 +75,8 @@ const Patients = () => {
   return (
     <div className="row mt-4 gy-5">
     <div className="col-12">
-    <SubHeader title="Pacientes" ruta="/" />
+    <SubHeader title="Usuarios" ruta="/" />
     <div className="form_container">
-        <Button variant="primary" as={Link} to="/patient/add">Nuevo Paciente</Button>
         {isLoading && <p>Loading...</p>}
         {error && <p>{error}</p>}
         {data && <DataTable
@@ -112,4 +100,4 @@ const Patients = () => {
   )
 }
 
-export default Patients
+export default Users
