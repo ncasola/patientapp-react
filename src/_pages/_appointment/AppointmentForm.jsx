@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ErrorMessage } from "@hookform/error-message";
+import SelectPatients from "_components/SelectPatients";
 
 const AppointmentForm = ({ appointmentData, handleAppointment }) => {
   // form validation rules
@@ -64,7 +65,11 @@ const AppointmentForm = ({ appointmentData, handleAppointment }) => {
           <div class="col">
             <div className="form-group">
               <label>Paciente</label>
-              <input type="text" className="form-control" name="patientId" {...register("patientId")} />
+              <select className="form-control" name="patientId" {...register("patientId")}>
+                <option value="">Seleccione un paciente</option>
+                <SelectPatients />
+              </select>
+              <div className="invalid-feedback">{errors.patientId?.message}</div>
             </div>
           </div>
           <div class="col">
@@ -73,7 +78,6 @@ const AppointmentForm = ({ appointmentData, handleAppointment }) => {
               <select className="form-control" {...register("status")}>
                 <option value="Pendiente">Pendiente</option>
                 <option value="Confirmada">Confirmada</option>
-                <option value="Cancelada">Cancelada</option>
               </select>
               <div className="invalid-feedback">{errors.status?.message}</div>
             </div>

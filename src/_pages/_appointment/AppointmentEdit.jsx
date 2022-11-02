@@ -7,6 +7,7 @@ import {
 import AppointmentForm from './AppointmentForm';
 import { addToast } from "_store/toast.slice";
 import { Button, Modal } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const AppointmentEdit = ({id, show, setShow}) => {
     const [updateAppointment] = useUpdateAppointmentMutation();
@@ -34,7 +35,9 @@ const AppointmentEdit = ({id, show, setShow}) => {
             {data && <AppointmentForm appointmentData={data} handleAppointment={handleSubmit} />} 
         </Modal.Body>
         <Modal.Footer>
-            <Button variant="danger" size='lg' onClick={handleDelete}>Eliminar</Button>
+            <Button variant="danger" size='lg' onClick={handleDelete}>
+              <FontAwesomeIcon icon="trash" /> Eliminar
+            </Button>
         </Modal.Footer>
       </Modal>
     )

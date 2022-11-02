@@ -1,25 +1,25 @@
 import React from "react";
 import SubHeader from "_components/_layout/SubHeader";
 import { Calendar, Views, luxonLocalizer } from "react-big-calendar";
-import {
-  useGetAppointmentsQuery,
-} from "_store/appointment.api";
+import { useGetAllAppointmentsQuery } from "_store/appointment.api";
 import { DateTime, Settings } from "luxon";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import AppointmentAdd from "./AppointmentAdd";
 import AppointmentEdit from "./AppointmentEdit";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
-import { dateToSql} from "_helpers/localizeDate";
-import { addToast } from '_store/toast.slice';
+import { dateToSql } from "_helpers/localizeDate";
+import { addToast } from "_store/toast.slice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Form, Row, Col } from "react-bootstrap";
 import { useDispatch } from "react-redux";
+import spanishMessages from "_helpers/spanishCalendar";
+import SelectPatients from "_components/SelectPatients";
 
 const Appointments = () => {
   Settings.defaultZone = "Etc/GMT";
   Settings.defaultLocale = "es-ES";
   const localizer = luxonLocalizer(DateTime, { firstDayOfWeek: 1 });
-  const { data, error, isLoading } = useGetAppointmentsQuery();
+  const { data, error, isLoading } = useGetAllAppointmentsQuery();
   const dispatch = useDispatch();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -27,18 +27,29 @@ const Appointments = () => {
   const [events, setEvents] = useState([]);
   const [showModalAdd, setShowModalAdd] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
-  const [searchPatient, setSearchPatient] = useState("");
+  const [searchPatient, setSearchPatient] = useState(0);
 
   const buildEvents = useCallback(
     (appointments) => {
       const eventsList = appointments.map((appointment) => {
         return {
-          title: `Cita nº ${appointment.id} - ${appointment.status} - Paciente nº ${appointment.patient.id}-${appointment.patient.name}`,
+          title: `Cita nº ${appointment.id} - ${appointment.status} - ${appointment.patient.name} ${appointment.patient.lastname}`,
           start: new Date(appointment.dateAppointmentStart),
           end: new Date(appointment.dateAppointmentEnd),
           allDay: false,
           appointment: appointment,
         };
+      });
+      eventsList.push({
+        title: "Cita nº 1 - Pendiente - Paciente 1",
+        start: new Date("2000-09-01T10:00:00"),
+        end: new Date("2000-09-01T11:00:00"),
+        allDay: false,
+        appointment: {
+          patient: {
+            id: "00000"
+          },
+        }
       });
       setEvents(eventsList);
     },
@@ -46,7 +57,7 @@ const Appointments = () => {
   );
 
   const handleSelectSlot = useCallback(
-    (slotInfo) => { 
+    (slotInfo) => {
       const { start, end } = slotInfo;
       setStartDate(dateToSql(start));
       setEndDate(dateToSql(end));
@@ -64,18 +75,23 @@ const Appointments = () => {
     [setShowModalEdit, setIdModal]
   );
 
-  const searchFormPatient = () => {
-    if (searchPatient !== "") {
-      const filteredEvents = events.filter((event) => {
-        return event.appointment.patient.name
-          .toLowerCase()
-          .includes(searchPatient.toLowerCase());
-      });
-      if(filteredEvents.length === 0){
-        dispatch(addToast({title: "Fallo", message: 'No se han encontrado resultados', type: 'warning'}));
-      } else {
-        setEvents(filteredEvents);
-      }      
+  const searchFormPatient = (e) => {
+    e.preventDefault();
+    console.log(searchPatient);
+    // filter events by patient id
+    const filteredEvents = events.filter((event) => {
+      return event.appointment.patient.id == searchPatient;
+    });
+    if (filteredEvents.length > 0) {
+      setEvents(filteredEvents);
+    } else {
+      dispatch(
+        addToast({
+          message: "No hay citas para este paciente",
+          type: "warning",
+          title: "Atención",
+        })
+      );
     }
   };
 
@@ -88,10 +104,9 @@ const Appointments = () => {
   );
   useEffect(() => {
     if (data) {
-      buildEvents(data.items);
+      buildEvents(data);
     }
   }, [data, buildEvents]);
-
 
   return (
     <div className="row mt-4 gy-5">
@@ -99,25 +114,45 @@ const Appointments = () => {
         <SubHeader title="Citas" ruta="/" />
         {isLoading && <p>Loading...</p>}
         {error && <p>{error}</p>}
-        <AppointmentAdd
+        {showModalAdd && <AppointmentAdd
           startDate={startDate}
           endDate={endDate}
           show={showModalAdd}
           setShow={setShowModalAdd}
         />
-        <AppointmentEdit id={idModal} show={showModalEdit} setShow={setShowModalEdit} />
+        }
+        {showModalEdit && <AppointmentEdit
+          id={idModal}
+          show={showModalEdit}
+          setShow={setShowModalEdit}
+        />
+        }
         <div className="form_container">
-          <InputGroup className="mb-3">
-            <Form.Control
-              type="text"
-              placeholder="Buscar paciente"
-              value={searchPatient}
-              onChange={(e) => setSearchPatient(e.target.value)}
-            />
-              <Button variant="outline-secondary" onClick={() => searchFormPatient()}>
-                Buscar
-              </Button>
-          </InputGroup>
+          <div className="row mb-4">
+            <div className="col-12">
+              <Form onSubmit={searchFormPatient}>
+                <Row>
+                  <Form.Group as={Col}>
+                    <Form.Select
+                      aria-label="Default select example"
+                      onChange={(e) => setSearchPatient(e.target.value)}
+                    >
+                      <option value="">Buscar por paciente</option>
+                      <SelectPatients />
+                    </Form.Select>
+                  </Form.Group>
+                  <Form.Group as={Col}>
+                    <Button variant="primary" type="submit">
+                      <FontAwesomeIcon icon="search" />
+                    </Button>
+                    <Button className="ms-2" variant="warning" onClick={() => buildEvents(data)}>
+                      <FontAwesomeIcon icon="undo" />
+                    </Button>
+                  </Form.Group>
+                </Row>
+              </Form>
+            </div>
+          </div>
           {events.length > 0 && (
             <Calendar
               localizer={localizer}
@@ -131,6 +166,7 @@ const Appointments = () => {
               views={["work_week", "agenda", "day"]}
               onSelectEvent={onSelectEvent}
               showAllEvents
+              messages={spanishMessages}
             />
           )}
         </div>

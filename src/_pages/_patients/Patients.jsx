@@ -1,23 +1,25 @@
 import React from 'react'
 import {useGetPatientsQuery, useDeletePatientMutation} from '_store/patient.api'
 import DataTable from 'react-data-table-component';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { addToast } from '_store/toast.slice';
 import { useDispatch } from "react-redux";
-import { useEffect, useState, useMemo } from 'react';
-import SubHeaderComponent from '_components/_layout/SubHeaderComponent';
-import debounce from 'lodash.debounce';
+import { useEffect, useState } from 'react';
 import SubHeader from '_components/_layout/SubHeader';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Form, Row, Col } from "react-bootstrap";
 
 const Patients = () => {
     // states
     const [totalRows, setTotalRows] = useState(0);
     const [size, setSize] = useState(10);
     const [pageNum, setPageNum] = useState(0);
-    const [filterText, setFilterText] = useState('');
-    const { data, error, isLoading } = useGetPatientsQuery({pageNum, size, filterText});
+    const [filterText, setFilterText] = useState("");
+    const [columnText, setColumnText] = useState("");
+    const [searchData, setSearchData] = useState({column: "", value: ""});
+    const { data, error, isLoading } = useGetPatientsQuery({pageNum, size, searchData});
     const columns = [
         {
             name: '#',
@@ -43,13 +45,19 @@ const Patients = () => {
             name: 'Acciones',
             cell: row => 
             <ButtonGroup>
-                <Button variant="primary" size="sm" as={Link} to={`/patient/${row.id}`}>Ver</Button>
-                <Button variant="danger" size="sm" onClick={() => handleDelete(row.id)}>Eliminar</Button>
+                <Button variant="primary" size="sm" as={Link} to={`/patient/${row.id}`}>
+                    <FontAwesomeIcon icon="eye" />
+                </Button>
+                <Button variant="warning" size="sm" as={Link} to={`/patient/edit/${row.id}`}>
+                    <FontAwesomeIcon icon="edit" />
+                </Button>
+                <Button variant="danger" size="sm" onClick={() => handleDelete(row.id)}>
+                    <FontAwesomeIcon icon="trash" />    
+                </Button>
             </ButtonGroup>
         }
     ];
     // hooks
-    const navigate = useNavigate();
     const [deletePatient] = useDeletePatientMutation();
     const dispatch = useDispatch();
     // functions
@@ -67,9 +75,10 @@ const Patients = () => {
         setPageNum(page);
 	};
     
-    const debouncedResults = useMemo(() => {
-        return debounce((e) => setFilterText(e.target.value), 300);
-    }, []);
+    const searchForm = (e) => {
+        e.preventDefault();
+        setSearchData({column: columnText, value: filterText});
+      };
 
     useEffect(() => {
         if (data) {
@@ -77,18 +86,53 @@ const Patients = () => {
         }
     }, [data]);
 
-    useEffect(() => {
-        return () => {
-            debouncedResults.cancel();
-        };
-    });
-
   return (
     <div className="row mt-4 gy-5">
     <div className="col-12">
     <SubHeader title="Pacientes" ruta="/" />
     <div className="form_container">
-        <Button variant="primary" as={Link} to="/patient/add">Nuevo Paciente</Button>
+    <div className="row">
+            <div className="col-2">
+              <Button variant="primary" as={Link} to="/patient/add">
+                <FontAwesomeIcon icon="plus" /> Nuevo paciente
+              </Button>
+            </div>
+            <div className="col-10">
+              <Form onSubmit={searchForm}>
+                <Row>
+                  <Form.Group as={Col}>
+                    <Form.Select
+                      aria-label="Default select example"
+                      onChange={(e) => setColumnText(e.target.value)}
+                    >
+                      <option value="">Buscar por...</option>
+                      <option value="name">Nombre</option>
+                      <option value="lastname">Apellidos</option>
+                      <option value="email">Email</option>
+                      <option value="phone">Telefono</option>
+                    </Form.Select>
+                  </Form.Group>
+
+                  <Form.Group as={Col}>
+                    <Form.Control
+                      type="text"
+                      placeholder="Buscar"
+                      value={filterText}
+                      onChange={(e) => setFilterText(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col}>
+                    <Button variant="primary" type="submit">
+                      <FontAwesomeIcon icon="search" />
+                    </Button>
+                    <Button className='ms-2' variant="warning" onClick={() => setSearchData({column: "", value: ""})}>
+                        <FontAwesomeIcon icon="times" />
+                    </Button>
+                  </Form.Group>
+                </Row>
+              </Form>
+            </div>
+          </div>
         {isLoading && <p>Loading...</p>}
         {error && <p>{error}</p>}
         {data && <DataTable
@@ -101,9 +145,6 @@ const Patients = () => {
 			onChangeRowsPerPage={handlePerRowsChange}
 			onChangePage={handlePageChange}
             highlightOnHover
-            subHeaderComponent={<SubHeaderComponent onFilter={debouncedResults} />}
-            subHeader
-            subHeaderAlign="left"
             persistTableHead
         />}
         </div>

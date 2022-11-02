@@ -6,6 +6,8 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { authActions } from "_store/auth.slice";
 
+import Logo from "_images/PatientAPP logo.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export { Header };
 
 function Header() {
@@ -19,37 +21,48 @@ function Header() {
   if (!authUser) return null;
 
   return (
-    <Navbar bg="dark" expand="lg">
+    <Navbar bg="white" expand="lg">
       <Container>
         <Navbar.Brand>
           <img
-            src="https://holasoft.es/wp-content/uploads/2017/08/logo-horizontal-700.png"
-            width="100"
+            src={Logo}
+            width="50%"
             alt="React Bootstrap logo"
           />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto mb-2 mb-lg-0">
+            <LinkContainer to="/">
+              <Nav.Link>
+                <FontAwesomeIcon icon="home" /> Inicio
+              </Nav.Link>
+            </LinkContainer>
+            {authUser.roles.some((x) => x.name === "admin") && (
+            <LinkContainer to="/users">
+              <Nav.Link>
+                <FontAwesomeIcon icon="users" /> Usuarios
+              </Nav.Link>
+            </LinkContainer>
+            )}
+            <LinkContainer to="/patients">
+              <Nav.Link>
+                <FontAwesomeIcon icon="user-injured" /> Pacientes
+              </Nav.Link>
+            </LinkContainer>
+            <LinkContainer to="/appointments">
+              <Nav.Link>
+                <FontAwesomeIcon icon="calendar-alt" /> Citas
+              </Nav.Link>
+            </LinkContainer>
             <NavDropdown
-              title={authUser?.email}
+              title={authUser?.name}
               className="dropdown_button"
               id="basic-nav-dropdown"
             >
-              <LinkContainer to="/home">
-                <NavDropdown.Item>Inicio</NavDropdown.Item>
+              <LinkContainer to="/profile">
+                <NavDropdown.Item>Perfil</NavDropdown.Item>
               </LinkContainer>
-              <LinkContainer to="/patients">
-                <NavDropdown.Item>Pacientes</NavDropdown.Item>
-              </LinkContainer>
-              <LinkContainer to="/appointments">
-                <NavDropdown.Item>Citas</NavDropdown.Item>
-              </LinkContainer>
-              {authUser.roles.some((x) => x.name === "admin") && (
-                <LinkContainer to="/users">
-                  <NavDropdown.Item>Usuarios</NavDropdown.Item>
-                </LinkContainer>
-              )}
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={logout}>
                 Cerrar sesión

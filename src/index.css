@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+@import url('https://fonts.googleapis.com/css?family=Righteous|Roboto:300,400,500,700&display=swap');
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import "react-big-calendar/lib/css/react-big-calendar.css";
 
@@ -7,12 +7,16 @@ html,
 body {
     height: 100%;
     margin: 0;
-    background-color: antiquewhite;
+    background-color: #e5e5f7;
+    opacity: 0.8;
+    background-image: linear-gradient(30deg, #eff6f5 12%, transparent 12.5%, transparent 87%, #eff6f5 87.5%, #eff6f5), linear-gradient(150deg, #eff6f5 12%, transparent 12.5%, transparent 87%, #eff6f5 87.5%, #eff6f5), linear-gradient(30deg, #eff6f5 12%, transparent 12.5%, transparent 87%, #eff6f5 87.5%, #eff6f5), linear-gradient(150deg, #eff6f5 12%, transparent 12.5%, transparent 87%, #eff6f5 87.5%, #eff6f5), linear-gradient(60deg, #eff6f577 25%, transparent 25.5%, transparent 75%, #eff6f577 75%, #eff6f577), linear-gradient(60deg, #eff6f577 25%, transparent 25.5%, transparent 75%, #eff6f577 75%, #eff6f577);
+    background-size: 20px 35px;
+    background-position: 0 0, 0 0, 10px 18px, 10px 18px, 0 0, 10px 18px;
 }
 
 /* include border and padding in element width and height */
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 /* full-sized  container that fills up the page */
@@ -22,7 +26,7 @@ body {
 
 
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Righteous', sans-serif;
 }
 
 .form_container {
@@ -41,7 +45,7 @@ body {
 
 #basic-nav-dropdown {
     color: #ffffff;
-    background-color: #577BC6;
+    background-color: #145da0;
     border-radius: 5px;
     padding: 0.5rem 1rem 0.5rem 1rem;
 }
@@ -50,50 +54,54 @@ body {
     color: #ffffff;
     border-radius: 5px;
     padding: 10px;
-    font-family: 'Montserrat';
-font-style: normal;
-font-weight: 400;
-font-size: 14px;
-line-height: 17px;
-color: #FFFFFF;
+    font-family: 'Righteous';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #FFFFFF;
 }
 
 .button-actions:hover {
     color: #ffffff;
-    background-color: #D37708;
+    background-color: #73d847;
 }
+
 .button-danger {
     background-color: #F44336;
 }
 
 .button-primary {
-    background-color: #577BC6;
+    background-color: #145da0;
 }
 
 .button-step {
     font-style: normal;
-    font-weight: 700;
+    font-weight: 400;
     font-size: 14px;
     line-height: 17px;
-    color: #577bc6;
-    border: 3px solid #577bc6;
+    color: #145da0;
+    border: 3px solid #145da0;
     box-sizing: border-box;
-    border-radius: 100px;
+    border-radius: 5px;
     padding: 10px 20px;
 }
 
 .label_form {
-    color: #D37708;
-    font-weight: 700;
+    color: #73d847;
+    font-weight: 400;
 }
 
 .step_header {
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 400;
     line-height: 22px;
     letter-spacing: 0em;
     text-align: left;
-    color: #D37708;
+    color: #145da0;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 .indexedStep {
@@ -106,32 +114,38 @@ color: #FFFFFF;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
-  .indexedStep.accomplished {
-    background-color: #D37708;
-  }
-
-input[type="radio"], input[type="checkbox"] {
-	border: 2px solid #D37708;
-    border-color: #D37708;  
 }
 
-input[type="radio"]:checked, input[type="checkbox"]:checked {
-	background-color: #D37708 !important;
-    border-color: #D37708 !important;
+.indexedStep.accomplished {
+    background-color: #73d847;
 }
 
-textarea, input {
-    border: 1px solid #D37708 !important;
+input[type="radio"],
+input[type="checkbox"] {
+    border: 2px solid #73d847;
+    border-color: #73d847;
 }
 
-.nav-tabs .nav-item .nav-link, .nav-tabs .nav-link {
+input[type="radio"]:checked,
+input[type="checkbox"]:checked {
+    background-color: #73d847 !important;
+    border-color: #73d847 !important;
+}
+
+textarea,
+input,
+select {
+    border: 1px solid #73d847 !important;
+}
+
+.nav-tabs .nav-item .nav-link,
+.nav-tabs .nav-link {
     color: #414141;
     font-weight: 700;
 }
 
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
     color: orangered;
     background-color: transparent;
     border-color: transparent;

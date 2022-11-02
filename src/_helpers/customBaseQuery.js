@@ -1,5 +1,5 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query'
-import { store } from '../_store'
+import { store } from '_store'
 import { authActions } from '_store';
 
 const baseQuery = fetchBaseQuery({ baseUrl: '/api' })

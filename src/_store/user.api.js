@@ -8,7 +8,7 @@ export const userApi = createApi({
   tagTypes: ['User'],
   endpoints: (builder) => ({
     getUsers: builder.query({
-        query: ({pageNum, size, filterText}) => `/users?page=${pageNum}&size=${size}&search=${filterText}`,
+        query: ({pageNum, size, searchData}) => `/users?page=${pageNum}&size=${size}&search=${searchData.value}&searchBy=${searchData.column}`,
         providesTags: (result, error, arg) =>
         result
           ? [...result.items.map(({ id }) => ({ type: 'User', id })), { type: 'User', id: 'PARTIAL-LIST' }]

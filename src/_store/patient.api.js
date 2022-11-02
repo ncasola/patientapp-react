@@ -8,11 +8,15 @@ export const patientApi = createApi({
   tagTypes: ['Patient'],
   endpoints: (builder) => ({
     getPatients: builder.query({
-        query: ({pageNum, size, filterText}) => `/patients?page=${pageNum}&size=${size}&search=${filterText}`,
+        query: ({pageNum, size, searchData}) => `/patients?page=${pageNum}&size=${size}&search=${searchData.value}&searchBy=${searchData.column}`,
         providesTags: (result, error, arg) =>
         result
           ? [...result.items.map(({ id }) => ({ type: 'Patient', id })), { type: 'Patient', id: 'PARTIAL-LIST' }]
           : [{ type: 'Patient', id: 'PARTIAL-LIST' }],
+    }),
+    getAllPatients: builder.query({
+        query: () => `/patients/all`,
+        providesTags: (result, error, arg) => [...result.map(({ id }) => ({ type: 'Patient', id }))],
     }),
     getPatient: builder.query({
         query: (id) => `/patients/${id}`,
@@ -45,4 +49,4 @@ export const patientApi = createApi({
 });
 
 // Export hooks for usage in functional components
-export const { useGetPatientsQuery, useGetPatientQuery, useCreatePatientMutation, useUpdatePatientMutation, useDeletePatientMutation } = patientApi;
+export const { useGetPatientsQuery, useGetAllPatientsQuery, useGetPatientQuery, useCreatePatientMutation, useUpdatePatientMutation, useDeletePatientMutation } = patientApi;

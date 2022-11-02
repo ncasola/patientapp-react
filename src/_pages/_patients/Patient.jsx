@@ -1,4 +1,5 @@
 import { useGetPatientQuery } from "_store/patient.api";
+import { useGetAppointmentsByUserQuery } from "_store/appointment.api";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import SubHeader from "_components/_layout/SubHeader";
@@ -6,6 +7,7 @@ import { dateToHuman } from "_helpers/localizeDate";
 import AppointmentEdit from "_pages/_appointment/AppointmentEdit";
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export { Patient };
 
@@ -14,10 +16,12 @@ function Patient() {
   const [idModal, setIdModal] = useState(null);
   const [showModalEdit, setShowModalEdit] = useState(false);
   const { data, error, isLoading } = useGetPatientQuery(params.id);
+  const { data: appointments, error: errorAppointments, isLoading: isLoadingAppointments } = useGetAppointmentsByUserQuery(params.id);
   const handleEdit = (appointment) => {
     setIdModal(appointment.id);
     setShowModalEdit(true);
   };
+
   return (
     <div className="row mt-4 gy-5">
       <div className="col-12">
@@ -57,7 +61,7 @@ function Patient() {
               </div>
               <div className="col-6">
                 <h3 className="text-center">
-                  Citas ({data.appointments.length} citas)
+                  Citas del paciente
                 </h3>
                 <table className="table table-striped">
                   <tbody>
@@ -68,7 +72,9 @@ function Patient() {
                       <th scope="row">Estado</th>
                       <th scope="row">Acciones</th>
                     </tr>
-                    {data.appointments.map((appointment) => (
+                    { isLoadingAppointments && <p>Loading...</p> }
+                    { errorAppointments && <p>{errorAppointments}</p> }
+                    {appointments && appointments.map((appointment) => (
                       <tr key={appointment.id}>
                         <th scope="row">Cita nº {appointment.id}</th>
                         <td>{dateToHuman(appointment.dateAppointmentStart)}</td>
@@ -76,7 +82,9 @@ function Patient() {
                         <td>{appointment.status}</td>
                         <td>
                         <ButtonGroup>
-                          <Button variant="primary" size="sm" onClick={() => handleEdit(appointment)}>Editar</Button>
+                          <Button variant="primary" size="sm" onClick={() => handleEdit(appointment)}>
+                            <FontAwesomeIcon icon="edit" />
+                          </Button>
                         </ButtonGroup>
                         </td>
                       </tr>
