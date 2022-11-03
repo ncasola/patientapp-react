@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useGetAppointmentsQuery } from '_store/appointment.api';
 import { useGetPatientsQuery } from '_store/patient.api';
 import { dateToHuman } from '_helpers/localizeDate';
-import { useEffect } from 'react';
+
 export { Home };
 
 function Home() {
@@ -14,17 +14,6 @@ function Home() {
     const searchData = { column: "", value: "" };
     const { data: appointments } = useGetAppointmentsQuery({ pageNum, size, searchData });
     const { data: patients } = useGetPatientsQuery({ pageNum, size, searchData });
-
-    useEffect(() => {
-        // order patients by name
-        if(patients) {
-            patients.items.sort((a, b) => {
-                if(a.name < b.name) { return -1; }
-                if(a.name > b.name) { return 1; }
-                return 0;
-            });
-        }   
-    }, [patients]);
 
     return (
         <div className="row mt-4 gy-5">

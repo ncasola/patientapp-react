@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ErrorMessage } from "@hookform/error-message";
@@ -20,7 +20,7 @@ const AppointmentForm = ({ appointmentData, handleAppointment }) => {
   const formOptions = { resolver: yupResolver(validationSchema) };
 
   // get functions to build form with useForm() hook
-  const { register, handleSubmit, reset, formState } = useForm(formOptions);
+  const { register, handleSubmit, reset, formState, control } = useForm(formOptions);
   const { errors, isSubmitting } = formState;
   useEffect(() => {
     if (appointmentData) {
@@ -65,11 +65,23 @@ const AppointmentForm = ({ appointmentData, handleAppointment }) => {
           <div class="col">
             <div className="form-group">
               <label>Paciente</label>
-              <select className="form-control" name="patientId" {...register("patientId")}>
-                <option value="">Seleccione un paciente</option>
-                <SelectPatients />
-              </select>
-              <div className="invalid-feedback">{errors.patientId?.message}</div>
+              <Controller
+                name="patientId"
+                control={control}
+                render={({ field }) => (
+                  <SelectPatients
+                    handleChange={field.onChange}
+                    value={field.value}
+                  />
+                )}
+              />
+              <ErrorMessage
+                errors={errors}
+                name="patientId"
+                render={({ message }) => (
+                  <div className="invalid-feedback d-block">{message}</div>
+                )}
+              />
             </div>
           </div>
           <div class="col">

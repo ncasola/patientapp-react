@@ -27,7 +27,7 @@ const Appointments = () => {
   const [events, setEvents] = useState([]);
   const [showModalAdd, setShowModalAdd] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
-  const [searchPatient, setSearchPatient] = useState(0);
+  const [searchPatient, setSearchPatient] = useState({});
 
   const buildEvents = useCallback(
     (appointments) => {
@@ -77,10 +77,8 @@ const Appointments = () => {
 
   const searchFormPatient = (e) => {
     e.preventDefault();
-    console.log(searchPatient);
-    // filter events by patient id
     const filteredEvents = events.filter((event) => {
-      return event.appointment.patient.id == searchPatient;
+      return event.appointment.patient.id == searchPatient.id;
     });
     if (filteredEvents.length > 0) {
       setEvents(filteredEvents);
@@ -133,13 +131,7 @@ const Appointments = () => {
               <Form onSubmit={searchFormPatient}>
                 <Row>
                   <Form.Group as={Col}>
-                    <Form.Select
-                      aria-label="Default select example"
-                      onChange={(e) => setSearchPatient(e.target.value)}
-                    >
-                      <option value="">Buscar por paciente</option>
-                      <SelectPatients />
-                    </Form.Select>
+                    <SelectPatients handleChange={setSearchPatient} />
                   </Form.Group>
                   <Form.Group as={Col}>
                     <Button variant="primary" type="submit">
