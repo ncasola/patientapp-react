@@ -77,6 +77,7 @@ const Appointments = () => {
 
   const searchFormPatient = (e) => {
     e.preventDefault();
+    console.log(searchPatient);
     const filteredEvents = events.filter((event) => {
       return event.appointment.patient.id == searchPatient.id;
     });

@@ -4,14 +4,16 @@ import {
 } from "_store/user.api";
 import UserForm from './UserForm';
 import { addToast } from "_store/toast.slice";
+import { useDispatch } from "react-redux";
 import { history } from '_helpers';
 import SubHeader from '_components/_layout/SubHeader';
 
 const UserAdd = () => {
     const [createUser, { isLoading, error }] = useCreateUserMutation();
+    const dispatch = useDispatch();
     const handleSubmit = async (user) => {
         await createUser(user);
-        addToast({message: 'Usuario guardado', type: 'success', title: 'Exito'});
+        dispatch(addToast({message: "Usuario creado correctamente", type: "success"}));
         history.push("/users");
     }
     return (

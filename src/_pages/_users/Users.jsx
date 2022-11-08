@@ -42,6 +42,10 @@ const Users = () => {
       selector: (row) => row.email,
     },
     {
+      name: "Rol",
+      selector: (row) => row.roles[0].name,
+    },
+    {
       name: "Acciones",
       cell: (row) => (
         <ButtonGroup>

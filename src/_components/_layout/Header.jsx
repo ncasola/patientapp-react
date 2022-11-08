@@ -17,7 +17,7 @@ function Header() {
     dispatch(authActions.logout());
   };
 
-  // only show nav when logged in
+  // check if authUser is empty
   if (!authUser) return null;
 
   return (
@@ -38,7 +38,7 @@ function Header() {
                 <FontAwesomeIcon icon="home" /> Inicio
               </Nav.Link>
             </LinkContainer>
-            {authUser.roles.some((x) => x.name === "admin") && (
+            {authUser.roles?.some((x) => x.name === "admin") && (
             <LinkContainer to="/users">
               <Nav.Link>
                 <FontAwesomeIcon icon="users" /> Usuarios

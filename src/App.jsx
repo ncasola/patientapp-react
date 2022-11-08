@@ -37,8 +37,6 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<Navigate to="/" />} />
           {PatientRoutes}
           {AppointmentRoutes}
           {UsersRoutes}

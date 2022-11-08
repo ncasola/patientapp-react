@@ -9,14 +9,14 @@ export const authApi = createApi({
   endpoints: (builder) => ({
     login: builder.mutation({
         query: (body) => ({
-            url: '/users/login', 
+            url: '/users/public/login', 
             method: 'POST',
             body
         }),
         invalidatesTags: ['Auth'],
-    })
+    }),
   }),
 });
 
 // Export hooks for usage in functional components
-export const { useLoginMutation} = authApi;
+export const { useLoginMutation } = authApi;

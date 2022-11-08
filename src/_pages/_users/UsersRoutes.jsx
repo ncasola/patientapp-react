@@ -2,6 +2,7 @@ import Users from "./Users";
 import User from "./User";
 import UserAdd from "./UserAdd";
 import UserEdit from "./UserEdit";
+import UserProfile from "./UserProfile";
 
 import { Route } from "react-router-dom";
 import { PrivateRoute } from "_components/_layout/PrivateRoute";
@@ -41,7 +42,16 @@ const usersArray =  [
             <UserAdd />
           </PrivateRoute>
         }
-      />
+      />,
+      <Route
+        
+      path="/profile"
+      element={
+        <PrivateRoute roles={["admin", "worker"]}>
+          <UserProfile />
+        </PrivateRoute>
+      }
+    />
     ];
 
 export default usersArray;

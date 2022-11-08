@@ -6,7 +6,7 @@ const SelectPatients = ({handleChange, value}) => {
   const { data } = useGetAllPatientsQuery();
   const defaultOption = data?.find((patient) => patient.id === value);
   const returnValue = (option) => {
-    handleChange(option.id);
+    handleChange(option);
 };
   return (
    <>

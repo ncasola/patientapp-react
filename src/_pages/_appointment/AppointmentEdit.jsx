@@ -6,6 +6,7 @@ import {
 } from "_store/appointment.api";
 import AppointmentForm from './AppointmentForm';
 import { addToast } from "_store/toast.slice";
+import { useDispatch } from "react-redux";
 import { Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -13,14 +14,15 @@ const AppointmentEdit = ({id, show, setShow}) => {
     const [updateAppointment] = useUpdateAppointmentMutation();
     const [deleteAppointment] = useDeleteAppointmentMutation();
     const { data } = useGetAppointmentQuery(id);
+    const dispatch = useDispatch();
     const handleSubmit = async (newAppointment) => {
         await updateAppointment({id, ...newAppointment});
-        addToast({message: 'Cita guardada', type: 'success', title: 'Exito'});
+        dispatch(addToast({message: "Cita actualizada correctamente", type: "success"}));
         setShow(false);
     }
     const handleDelete = async () => {
         await deleteAppointment(id);
-        addToast({message: 'Cita eliminada', type: 'success', title: 'Exito'});
+        dispatch(addToast({message: "Cita eliminada correctamente", type: "success"}));
         setShow(false);
     }
 

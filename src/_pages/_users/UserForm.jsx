@@ -18,8 +18,9 @@ const UserForm = ({userData, handleUser}) => {
   const { errors, isSubmitting } = formState;
 
   useEffect(() => {
-    if(userData){
-      reset(userData);
+    console.log(userData);
+    if(userData) {
+      reset({...userData, role: userData.roles[0].id});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData]);
@@ -80,6 +81,18 @@ const UserForm = ({userData, handleUser}) => {
               className={`form-control ${errors.password ? "is-invalid" : ""}`}
             />
             <div className="invalid-feedback">{errors.password?.message}</div>
+          </div>
+          <div className="form-group">
+            <label>Rol</label>
+            <select
+              name="role"
+              {...register("role")}
+              className={`form-control ${errors.role ? "is-invalid" : ""}`}
+            >
+              <option value="1">Administrador</option>
+              <option value="2">Usuario</option>
+            </select>
+            <div className="invalid-feedback">{errors.role?.message}</div>
           </div>
           <button
             disabled={isSubmitting}

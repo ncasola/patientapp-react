@@ -1,5 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { encryptTransform } from 'redux-persist-transform-encrypt';
+import expireReducer from 'redux-persist-expire';
 import { patientApi } from "./patient.api";
 import { appointmentApi } from "./appointment.api";
 import { authApi } from "./auth.api";
@@ -14,9 +17,25 @@ export * from "./appointment.api";
 export * from "./auth.api";
 export * from "./user.api";
 
+
+
+const persistConfig = {
+  key: "user",
+  storage,
+  transforms: [
+    encryptTransform({
+      secretKey: "$2a$12$YU8JkYV1/MsiJP8fFl/EfO9dsLOQHyCbsP8cfjTiTATR89ToO.JaK",
+    }),
+    expireReducer('user', {
+      expireSeconds: 7200,
+      expiredState: null,
+    }),
+  ],
+};
+
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
+    auth: persistReducer(persistConfig, authReducer),
     toast: toastReducer,
     [patientApi.reducerPath]: patientApi.reducer,
     [appointmentApi.reducerPath]: appointmentApi.reducer,
@@ -30,3 +49,5 @@ export const store = configureStore({
       .concat(authApi.middleware)
       .concat(userApi.middleware),
 });
+
+export const persistor = persistStore(store);

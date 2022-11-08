@@ -36,7 +36,21 @@ export const userApi = createApi({
             method: "PUT",
             body,
         }),
-        invalidatesTags: (result, error, arg) => [{ type: 'User', id: arg.id }],
+        invalidatesTags: (result, error, arg) => [
+            { type: 'User', id: arg.id },
+            { type: 'User', id: 'PARTIAL-LIST' },
+        ],
+    }),
+    updateProfile: builder.mutation({
+        query: (body) => ({
+            url: `/users/profile`,
+            method: "POST",
+            body,
+        }),
+        invalidatesTags: (result, error, arg) => [
+            { type: 'User', id: arg.id },
+            { type: 'User', id: 'PARTIAL-LIST' },
+        ],
     }),
     deleteUser: builder.mutation({
         query: (id) => ({
@@ -52,4 +66,4 @@ export const userApi = createApi({
 });
 
 // Export hooks for usage in functional components
-export const { useGetUsersQuery, useGetAllUsersQuery, useGetUserQuery, useCreateUserMutation, useUpdateUserMutation, useDeleteUserMutation } = userApi;
+export const { useGetUsersQuery, useGetAllUsersQuery, useGetUserQuery, useCreateUserMutation, useUpdateUserMutation, useUpdateProfileMutation, useDeleteUserMutation } = userApi;

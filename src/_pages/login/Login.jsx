@@ -45,7 +45,7 @@ function Login() {
     return (
         <div className="col-md-6 offset-md-3 mt-5">
             <div className="alert alert-primary">
-                email: ncasolajimenez@gmail.com<br />
+                email: Frederique.Monahan@gmail.com<br />
                 Password: 123456
             </div>
             <div className="card">

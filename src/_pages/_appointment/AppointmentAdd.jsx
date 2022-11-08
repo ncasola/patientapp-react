@@ -4,17 +4,19 @@ import {
 } from "_store/appointment.api";
 import AppointmentForm from './AppointmentForm';
 import { addToast } from "_store/toast.slice";
+import { useDispatch } from "react-redux";
 import Modal from 'react-bootstrap/Modal';
 
 const AppointmentAdd = ({startDate, endDate, show, setShow}) => {
     const [createAppointment] = useCreateAppointmentMutation();
+    const dispatch = useDispatch();
     const newAppointment = {
         dateAppointmentStart: startDate,
         dateAppointmentEnd: endDate,
     }
     const handleSubmit = async (appointment) => {
         await createAppointment(appointment);
-        addToast({message: 'Paciente guardado', type: 'success', title: 'Exito'});
+        dispatch(addToast({message: "Cita creada correctamente", type: "success"}));
         setShow(false);
     }
     const handleClose = () => setShow(false)

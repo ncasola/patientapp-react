@@ -4,14 +4,16 @@ import {
 } from "_store/patient.api";
 import PatientForm from './PatientForm';
 import { addToast } from "_store/toast.slice";
+import { useDispatch } from "react-redux";
 import { history } from '_helpers';
 import SubHeader from '_components/_layout/SubHeader';
 
 const PatientAdd = () => {
     const [createPatient, { isLoading, error }] = useCreatePatientMutation();
+    const dispatch = useDispatch();
     const handleSubmit = async (patient) => {
         await createPatient(patient);
-        addToast({message: 'Paciente guardado', type: 'success', title: 'Exito'});
+        dispatch(addToast({message: "Paciente creado correctamente", type: "success"}));
         history.push("/patients");
     }
     return (

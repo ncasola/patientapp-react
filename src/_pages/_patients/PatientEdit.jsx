@@ -7,15 +7,17 @@ import PatientForm from './PatientForm';
 import { history } from '_helpers';
 import { useParams } from 'react-router-dom';
 import { addToast } from "_store/toast.slice";
+import { useDispatch } from "react-redux";
 import SubHeader from '_components/_layout/SubHeader';
 
 const PatientEdit = () => {
     const [updatePatient, { isLoading, error }] = useUpdatePatientMutation();
+    const dispatch = useDispatch();
     const { id } = useParams();
     const { data } = useGetPatientQuery(id);
     const handleSubmit = async (newPatient) => {
         await updatePatient({id, ...newPatient});
-        addToast({message: 'Paciente guardado', type: 'success', title: 'Exito'});
+        dispatch(addToast({message: "Paciente actualizado correctamente", type: "success"}));
         history.navigate('/patients');
     }
     return (
