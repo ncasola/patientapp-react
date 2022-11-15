@@ -1,0 +1,13 @@
+version: "3"
+services:
+  front:
+    build: .
+    environment:
+      VIRTUAL_HOST: patients.ncasola.cloud
+      LETSENCRYPT_HOST: patients.ncasola.cloud
+      LETSENCRYPT_EMAIL: ncasolajimenez@gmail.com
+
+networks:
+  default:
+    external:
+      name: proxy
