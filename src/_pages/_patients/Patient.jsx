@@ -26,7 +26,7 @@ function Patient() {
     <div className="row mt-4 gy-5">
       <div className="col-12">
         <SubHeader title="Paciente" ruta="/patients" />
-        <AppointmentEdit id={idModal} show={showModalEdit} setShow={setShowModalEdit} />
+        {showModalEdit && <AppointmentEdit id={idModal} show={showModalEdit} setShow={setShowModalEdit} />}
         {isLoading && <p>Loading...</p>}
         {error && <p>{error}</p>}
         {data && (

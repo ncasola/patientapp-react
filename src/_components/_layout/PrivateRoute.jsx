@@ -8,7 +8,6 @@ export { PrivateRoute };
 
 function PrivateRoute({ children, roles}) {
     const authUser = useSelector(state => state.auth.user);
-    console.log(authUser);
     if (!authUser) {
         store.dispatch(authActions.logout());
         return <Navigate to="/login" state={{ from: history.location }} />

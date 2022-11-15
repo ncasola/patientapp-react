@@ -80,7 +80,7 @@ const Users = () => {
     dispatch(
       addToast({
         message: "Usuario eliminado",
-        type: "success",
+        type: "danger",
         title: "Eliminado",
       })
     );
@@ -98,6 +98,11 @@ const Users = () => {
   const searchForm = (e) => {
     e.preventDefault();
     setSearchData({column: columnText, value: filterText});
+  };
+
+  const cleanSearch = () => {
+    setFilterText("");
+    setSearchData({ column: "", value: "" });
   };
 
   useEffect(() => {
@@ -142,7 +147,14 @@ const Users = () => {
                   </Form.Group>
                   <Form.Group as={Col}>
                     <Button variant="primary" type="submit">
-                      <FontAwesomeIcon icon="search" />
+                      <FontAwesomeIcon icon="search" /> Buscar
+                    </Button>
+                    <Button
+                      className="ms-2"
+                      variant="warning"
+                      onClick={() => cleanSearch()}
+                    >
+                      <FontAwesomeIcon icon="times" /> Limpiar
                     </Button>
                   </Form.Group>
                 </Row>

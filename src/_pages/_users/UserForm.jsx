@@ -18,9 +18,9 @@ const UserForm = ({userData, handleUser}) => {
   const { errors, isSubmitting } = formState;
 
   useEffect(() => {
-    console.log(userData);
+    const role = (userData && userData.roles) ? userData.roles[0].id : 2;
     if(userData) {
-      reset({...userData, role: userData.roles[0].id});
+      reset({...userData, role: role});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData]);

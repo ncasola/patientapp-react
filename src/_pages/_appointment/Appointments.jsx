@@ -77,9 +77,8 @@ const Appointments = () => {
 
   const searchFormPatient = (e) => {
     e.preventDefault();
-    console.log(searchPatient);
     const filteredEvents = events.filter((event) => {
-      return event.appointment.patient.id == searchPatient.id;
+      return event.appointment.patient.id === searchPatient;
     });
     if (filteredEvents.length > 0) {
       setEvents(filteredEvents);
@@ -136,10 +135,10 @@ const Appointments = () => {
                   </Form.Group>
                   <Form.Group as={Col}>
                     <Button variant="primary" type="submit">
-                      <FontAwesomeIcon icon="search" />
+                      <FontAwesomeIcon icon="search" /> Buscar
                     </Button>
                     <Button className="ms-2" variant="warning" onClick={() => buildEvents(data)}>
-                      <FontAwesomeIcon icon="undo" />
+                      <FontAwesomeIcon icon="undo" /> Limpiar
                     </Button>
                   </Form.Group>
                 </Row>

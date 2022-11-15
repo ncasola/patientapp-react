@@ -19,7 +19,7 @@ const UserAdd = () => {
     return (
         <div className="row mt-4 gy-5">
             <div className="col-12">
-            <SubHeader title="Añadir Paciente" ruta="/users" />
+            <SubHeader title="Añadir Usuario" ruta="/users" />
             <div className="form_container">
             <UserForm userData={{}} handleUser={handleSubmit} />
             {isLoading && <p>Loading...</p>}

@@ -18,7 +18,6 @@ const PatientEdit = () => {
     const handleSubmit = async (newPatient) => {
         await updatePatient({id, ...newPatient});
         dispatch(addToast({message: "Paciente actualizado correctamente", type: "success"}));
-        history.navigate('/patients');
     }
     return (
         <div className="row mt-4 gy-5">

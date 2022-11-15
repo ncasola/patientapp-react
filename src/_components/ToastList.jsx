@@ -8,7 +8,7 @@ const ToastList = () => {
     const toasts = useSelector((state) => state.toast.toasts);
     const dispatch = useDispatch();
   return (
-    <ToastContainer position="bottom-start">
+    <ToastContainer position="bottom-start" className="p-3">
     {toasts.map((toast) => (
       <Toast
         key={toast.id}
@@ -17,11 +17,12 @@ const ToastList = () => {
         bg={toast.type}
         autohide
       >
-        <Toast.Header>
-          <strong className="mr-auto">{toast.title}</strong>
+        <Toast.Header closeButton={false}>
+          <strong className="me-auto">{toast.title ? toast.title : "Notificación"}</strong>
+          <small>Hace un segundo</small>
         </Toast.Header>
         <Toast.Body>
-          <p>{toast.text}</p>
+          <p data-testid="toast">{toast.text}</p>
         </Toast.Body>
       </Toast>
     ))}

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useGetAppointmentsQuery } from '_store/appointment.api';
 import { useGetPatientsQuery } from '_store/patient.api';
 import { dateToHuman } from '_helpers/localizeDate';
-
+import { Link } from 'react-router-dom';
 export { Home };
 
 function Home() {
@@ -21,8 +21,8 @@ function Home() {
             <h1 className="text-center">Bienvenido {authUser.name}</h1>
             <div className="row">
                 <div className="col-6">
-                    <h3 className="text-center">Ultimas citas <Button variant="primary" size='sm' href="/appointments">Ver todas</Button></h3>
-                    <table className="table table-striped">
+                    <h3 className="text-center">Ultimas citas <Button variant="primary" size="sm" as={Link} to="/appointments">Ver todas</Button></h3>
+                    <table className="table table-striped" data-testid="citas">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -42,8 +42,8 @@ function Home() {
                     </table>
                     </div>
                     <div className="col-6">
-                    <h3 className="text-center">Ultimos pacientes <Button variant="primary" size="sm" href="/patients">Ver todos</Button></h3>
-                    <table className="table table-striped">
+                    <h3 className="text-center">Ultimos pacientes <Button variant="primary" size='sm' as={Link} to="/patients">Ver todos</Button></h3>
+                    <table className="table table-striped" data-testid="pacientes">
                         <thead>
 
                             <tr>

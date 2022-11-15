@@ -17,7 +17,7 @@ const SelectPatients = ({handleChange, value}) => {
         placeholder="Buscar paciente"
         isSearchable
         value={defaultOption}
-        onChange={(option) => returnValue(option)}
+        onChange={(option) => returnValue(option.id)}
         />
    </>
   )
