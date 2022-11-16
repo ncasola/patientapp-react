@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ErrorMessage } from "@hookform/error-message";
 import SelectPatients from "_components/SelectPatients";
+import { Form, Button, Row, Col } from "react-bootstrap";
 
 const AppointmentForm = ({ appointmentData, handleAppointment }) => {
   // form validation rules
@@ -44,32 +45,33 @@ const AppointmentForm = ({ appointmentData, handleAppointment }) => {
           ))
         }
       />
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div class="row g-3">
-          <div class="col">
-            <div className="form-group">
-              <input
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Row className="g-3">
+          <Col sm>
+            <Form.Group>
+              <Form.Control
                 type="hidden"
                 name="dateAppointmentStart"
                 {...register("dateAppointmentStart")}
               />
-              <input
+              <Form.Control
                 type="hidden"
                 name="dateAppointmentEnd"
                 {...register("dateAppointmentEnd")}
               />
-            </div>
-          </div>
-        </div>
-        <div class="row g-3">
-          <div class="col">
-            <div className="form-group">
-              <label>Paciente</label>
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row className="g-3">
+        <Col sm>
+        <Form.Group>
+              <Form.Label htmlFor="patientId">Paciente</Form.Label>
               <Controller
                 name="patientId"
                 control={control}
                 render={({ field }) => (
                   <SelectPatients
+                    name="patientId"
                     handleChange={field.onChange}
                     value={field.value}
                   />
@@ -82,21 +84,29 @@ const AppointmentForm = ({ appointmentData, handleAppointment }) => {
                   <div className="invalid-feedback d-block">{message}</div>
                 )}
               />
-            </div>
-          </div>
-          <div class="col">
-            <div className="form-group">
-              <label>Estatus</label>
-              <select className="form-control" {...register("status")}>
+            </Form.Group>
+          </Col>
+          <Col sm>
+            <Form.Group>
+              <Form.Label>Estatus</Form.Label>
+              <Form.Select
+              data-testid="status"
+              className="form-control" 
+              name="status" 
+              role="combobox" 
+              {...register("status")}>
                 <option value="Pendiente">Pendiente</option>
                 <option value="Confirmada">Confirmada</option>
-              </select>
+              </Form.Select>
               <div className="invalid-feedback">{errors.status?.message}</div>
-            </div>
-          </div>
-          <div className="form-group mb-4">
-            <label>Observations</label>
-            <textarea
+            </Form.Group>
+            </Col>
+            <Col xs={12}>
+          <Form.Group>
+            <Form.Label>Observations</Form.Label>
+            <Form.Control
+              as="textarea"
+              name="observations"
               {...register("observations")}
               className={`form-control ${
                 errors.observations ? "is-invalid" : ""
@@ -105,21 +115,22 @@ const AppointmentForm = ({ appointmentData, handleAppointment }) => {
             <div className="invalid-feedback">
               {errors.observations?.message}
             </div>
-          </div>
-        </div>
-        <div class="d-grid gap-2">
-          <button
+          </Form.Group>
+          </Col>
+        <div className="d-grid gap-2 mt-4">
+          <Button
             disabled={isSubmitting}
             type="submit"
-            className="btn btn-primary"
+variant="primary"
           >
             {isSubmitting && (
               <span className="spinner-border spinner-border-sm mr-1"></span>
             )}
             Enviar
-          </button>
+          </Button>
         </div>
-      </form>
+        </Row>
+      </Form>
     </>
   );
 };

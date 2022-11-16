@@ -7,10 +7,11 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import AppointmentAdd from "./AppointmentAdd";
 import AppointmentEdit from "./AppointmentEdit";
 import Button from "react-bootstrap/Button";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 import { dateToSql } from "_helpers/localizeDate";
 import { addToast } from "_store/toast.slice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Form, Row, Col } from "react-bootstrap";
+import { Form, Row, Col, Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import spanishMessages from "_helpers/spanishCalendar";
 import SelectPatients from "_components/SelectPatients";
@@ -107,8 +108,7 @@ const Appointments = () => {
   }, [data, buildEvents]);
 
   return (
-    <div className="row mt-4 gy-5">
-      <div className="col-12">
+    <Container className="mt-4">
         <SubHeader title="Citas" ruta="/" />
         {isLoading && <p>Loading...</p>}
         {error && <p>{error}</p>}
@@ -125,26 +125,28 @@ const Appointments = () => {
           setShow={setShowModalEdit}
         />
         }
-        <div className="form_container">
-          <div className="row mb-4">
-            <div className="col-12">
+        <Container className="custom_container">
+        <Row className="g-3 mb-4">
+        <Col sm>
               <Form onSubmit={searchFormPatient}>
-                <Row>
+                <Row className="g-3">
                   <Form.Group as={Col}>
                     <SelectPatients handleChange={setSearchPatient} />
                   </Form.Group>
                   <Form.Group as={Col}>
+                  <ButtonGroup>
                     <Button variant="primary" type="submit">
                       <FontAwesomeIcon icon="search" /> Buscar
                     </Button>
-                    <Button className="ms-2" variant="warning" onClick={() => buildEvents(data)}>
+                    <Button variant="warning" onClick={() => buildEvents(data)}>
                       <FontAwesomeIcon icon="undo" /> Limpiar
                     </Button>
+                    </ButtonGroup>
                   </Form.Group>
                 </Row>
               </Form>
-            </div>
-          </div>
+              </Col>
+          </Row>
           {events.length > 0 && (
             <Calendar
               localizer={localizer}
@@ -161,9 +163,8 @@ const Appointments = () => {
               messages={spanishMessages}
             />
           )}
-        </div>
-      </div>
-    </div>
+        </Container>
+    </Container>
   );
 };
 

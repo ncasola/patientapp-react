@@ -8,6 +8,7 @@ import AppointmentEdit from "_pages/_appointment/AppointmentEdit";
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Container, Row, Col, Table } from "react-bootstrap";
 
 export { Patient };
 
@@ -23,18 +24,17 @@ function Patient() {
   };
 
   return (
-    <div className="row mt-4 gy-5">
-      <div className="col-12">
+    <Container fluid className="mt-4">
         <SubHeader title="Paciente" ruta="/patients" />
         {showModalEdit && <AppointmentEdit id={idModal} show={showModalEdit} setShow={setShowModalEdit} />}
         {isLoading && <p>Loading...</p>}
         {error && <p>{error}</p>}
         {data && (
-          <div className="form_container">
-            <div className="row">
-              <div className="col-6">
+          <Container className="custom_container">
+            <Row>
+              <Col sm>
                 <h3 className="text-center">Datos del paciente</h3>
-                <table className="table table-striped">
+                <Table responsive>
                   <tbody>
                     <tr>
                       <th scope="row">Nombre</th>
@@ -57,13 +57,15 @@ function Patient() {
                       <td>{data.address}</td>
                     </tr>
                   </tbody>
-                </table>
-              </div>
-              <div className="col-6">
+                </Table>
+              </Col>
+              <Col sm>
                 <h3 className="text-center">
                   Citas del paciente
                 </h3>
-                <table className="table table-striped">
+                { isLoadingAppointments && <p>Loading...</p> }
+                { errorAppointments && <p>{errorAppointments}</p> }
+                <Table responsive>
                   <tbody>
                     <tr>
                       <th scope="row">Cita</th>
@@ -72,8 +74,6 @@ function Patient() {
                       <th scope="row">Estado</th>
                       <th scope="row">Acciones</th>
                     </tr>
-                    { isLoadingAppointments && <p>Loading...</p> }
-                    { errorAppointments && <p>{errorAppointments}</p> }
                     {appointments && appointments.map((appointment) => (
                       <tr key={appointment.id}>
                         <th scope="row">Cita nº {appointment.id}</th>
@@ -90,13 +90,12 @@ function Patient() {
                       </tr>
                     ))}
                   </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+                </Table>
+              </Col>
+            </Row>
+          </Container>
         )}
-      </div>
-    </div>
+      </Container>
   );
 }
 

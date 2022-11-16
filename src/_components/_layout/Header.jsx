@@ -21,17 +21,19 @@ function Header() {
   if (!authUser) return null;
 
   return (
-    <Navbar bg="white" expand="lg">
+    <Navbar bg="white" collapseOnSelect expand="lg">
       <Container>
         <Navbar.Brand>
           <img
             src={Logo}
-            width="50%"
-            alt="React Bootstrap logo"
+            width="100%"
+            height="30"
+            alt="PatientAPP"
+            className="d-inline-block align-top"
           />
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ms-auto mb-2 mb-lg-0">
             <LinkContainer to="/">
               <Nav.Link>

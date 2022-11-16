@@ -12,7 +12,7 @@ import SubHeader from "_components/_layout/SubHeader";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Form, Row, Col } from "react-bootstrap";
+import { Form, Row, Col, Container } from "react-bootstrap";
 
 const Patients = () => {
   // states
@@ -123,20 +123,19 @@ const Patients = () => {
   }, [data]);
 
   return (
-    <div className="row mt-4 gy-5">
-      <div className="col-12">
+    <Container className="mt-4">
         <SubHeader title="Pacientes" ruta="/" />
-        <div className="form_container">
-          <div className="row">
-            <div className="col-2">
+        <Container className="custom_container">
+          <Row className="g-3">
+            <Col sm>
               <Button variant="primary" as={Link} to="/patient/add">
                 <FontAwesomeIcon icon="plus" /> Nuevo paciente
               </Button>
-            </div>
-            <div className="col-10">
+            </Col>
+            <Col sm>
               <Form onSubmit={searchForm}>
-                <Row>
-                  <Form.Group as={Col}>
+                <Row className="g-3">
+                  <Form.Group as={Col} sm>
                     <Form.Select
                       onChange={(e) => setColumnText(e.target.value)}
                       aria-label="Columnas"
@@ -148,8 +147,7 @@ const Patients = () => {
                       <option value="phone">Telefono</option>
                     </Form.Select>
                   </Form.Group>
-
-                  <Form.Group as={Col}>
+                  <Form.Group as={Col} sm>
                     <Form.Control
                       type="text"
                       aria-label="Buscar"
@@ -158,22 +156,22 @@ const Patients = () => {
                       onChange={(e) => setFilterText(e.target.value)}
                     />
                   </Form.Group>
-                  <Form.Group as={Col}>
-                    <Button variant="primary" type="submit">
+                  <Form.Group as={Col} sm>
+                  <ButtonGroup>
+                    <Button size="sm" variant="primary" type="submit">
                       <FontAwesomeIcon icon="search" /> Buscar
                     </Button>
-                    <Button
-                      className="ms-2"
-                      variant="warning"
+                    <Button size="sm" variant="warning"
                       onClick={() => cleanSearch()}
                     >
                       <FontAwesomeIcon icon="times" /> Limpiar
                     </Button>
+                    </ButtonGroup>
                   </Form.Group>
                 </Row>
               </Form>
-            </div>
-          </div>
+            </Col>
+          </Row>
           {isLoading && <p>Loading...</p>}
           {error && <p>{error}</p>}
           {data && (
@@ -189,9 +187,8 @@ const Patients = () => {
               highlightOnHover
             />
           )}
-        </div>
-      </div>
-    </div>
+        </Container>
+    </Container>
   );
 };
 

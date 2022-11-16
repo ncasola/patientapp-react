@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ErrorMessage } from "@hookform/error-message";
+import { Form, Button, Col } from "react-bootstrap";
 
 const PatientForm = ({patientData, handlePatient}) => {
   // form validation rules
@@ -45,127 +46,131 @@ const PatientForm = ({patientData, handlePatient}) => {
             ))
           }
         />
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="form-group">
-            <label for="name-input" className="form-label">Nombre</label>
-            <input
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <Form.Group as={Col}>
+            <Form.Label htmlFor="name-input">Nombre</Form.Label>
+            <Form.Control
               name="name"
               type="text"
               {...register("name")}
               id="name-input"
               aria-label="Nombre"
-              className={`form-control ${errors.name ? "is-invalid" : ""}`}
+              className={`${errors.name ? "is-invalid" : ""}`}
             />
             <div className="invalid-feedback">{errors.name?.message}</div>
-          </div>
-          <div className="form-group">
-            <label for="lastname-input" className="form-label">Apellido</label>
-            <input
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label htmlFor="lastname-input">Apellido</Form.Label>
+            <Form.Control
               name="lastname"
               type="text"
               {...register("lastname")}
               id="lastname-input"
               aria-label="Apellido"
-              className={`form-control ${errors.lastname ? "is-invalid" : ""}`}
+              className={`${errors.lastname ? "is-invalid" : ""}`}
             />
             <div className="invalid-feedback">{errors.lastname?.message}</div>
-          </div>
-          <div className="form-group">
-            <label for="email-input" className="form-label>">Email</label>
-            <input
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label htmlFor="email-input">Email</Form.Label>
+            <Form.Control
               name="email"
               type="text"
               {...register("email")}
               id="email-input"
               aria-label="Email"
-              className={`form-control ${errors.email ? "is-invalid" : ""}`}
+              className={`${errors.email ? "is-invalid" : ""}`}
             />
             <div className="invalid-feedback">{errors.email?.message}</div>
-          </div>
-          <div className="form-group">
-            <label for="phone-input" className="form-label>">Teléfono</label>
-            <input
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label htmlFor="phone-input">Teléfono</Form.Label>
+            <Form.Control
               name="phone"
               type="text"
               {...register("phone")}
               id="phone-input"
               aria-label="Teléfono"
-              className={`form-control ${errors.phone ? "is-invalid" : ""}`}
+              className={`${errors.phone ? "is-invalid" : ""}`}
             />
             <div className="invalid-feedback">{errors.phone?.message}</div>
-          </div>
-          <div className="form-group">
-            <label for="address-input" className="form-label>">Dirección</label>
-            <input
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label htmlFor="address-input">Dirección</Form.Label>
+            <Form.Control
               name="address"
               type="text"
               {...register("address")}
               id="address-input"
               aria-label="Dirección"
-              className={`form-control ${errors.address ? "is-invalid" : ""}`}
+              className={`${errors.address ? "is-invalid" : ""}`}
             />
             <div className="invalid-feedback">{errors.address?.message}</div>
-          </div>
-          <div className="form-group">
-            <label for="city-input" className="form-label>">Ciudad</label>
-            <input
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label htmlFor="city-input">Ciudad</Form.Label>
+            <Form.Control
               name="city"
               type="text"
               {...register("city")}
               id="city-input"
               aria-label="Ciudad"
-              className={`form-control ${errors.city ? "is-invalid" : ""}`}
+              className={`${errors.city ? "is-invalid" : ""}`}
             />
             <div className="invalid-feedback">{errors.city?.message}</div>
-          </div>
-          <div className="form-group">
-            <label for="state-input" className="form-label>">Estado</label>
-            <input
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label htmlFor="state-input">Estado</Form.Label>
+            <Form.Control
               name="state"
               type="text"
               {...register("state")}
               id="state-input"
               aria-label="Estado"
-              className={`form-control ${errors.state ? "is-invalid" : ""}`}
+              className={`${errors.state ? "is-invalid" : ""}`}
             />
             <div className="invalid-feedback">{errors.state?.message}</div>
-          </div>
+          </Form.Group>
 
-          <div className="form-group">
-            <label for="country-input" className="form-label>">País</label>
-            <input
+          <Form.Group as={Col}>
+            <Form.Label htmlFor="country-input">País</Form.Label>
+            <Form.Control
               name="country"
               type="text"
               {...register("country")}
               id="country-input"
               aria-label="País"
-              className={`form-control ${errors.country ? "is-invalid" : ""}`}
+              className={`${errors.country ? "is-invalid" : ""}`}
             />
             <div className="invalid-feedback">{errors.country?.message}</div>
-          </div>
+          </Form.Group>
 
-          <div className="form-group">
-            <label for="zip-input" className="form-label>">Código Postal</label>
-            <input
+          <Form.Group as={Col}>
+            <Form.Label htmlFor="zip-input">Código Postal</Form.Label>
+            <Form.Control
               name="zip"
               type="text"
               {...register("zip")}
               id="zip-input"
-              className={`form-control ${errors.zip ? "is-invalid" : ""}`}
+              className={`${errors.zip ? "is-invalid" : ""}`}
             />
             <div className="invalid-feedback">{errors.zip?.message}</div>
-          </div>
-          <button
+          </Form.Group>
+          <div className="d-grid gap-2 mt-4">
+          <Button
             disabled={isSubmitting}
             type="submit"
-            className="btn btn-primary"
+            variant="primary"
+            size="lg"
           >
             {isSubmitting && (
               <span className="spinner-border spinner-border-sm mr-1"></span>
             )}
             Enviar
-          </button>
-        </form>
+          </Button>
+          </div>
+
+        </Form>
         </>
   );
 };

@@ -1,9 +1,10 @@
-import { Button } from 'react-bootstrap';
+import { Button, Row, Col, Table, Container } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useGetAppointmentsQuery } from '_store/appointment.api';
 import { useGetPatientsQuery } from '_store/patient.api';
 import { dateToHuman } from '_helpers/localizeDate';
 import { Link } from 'react-router-dom';
+
 export { Home };
 
 function Home() {
@@ -16,13 +17,14 @@ function Home() {
     const { data: patients } = useGetPatientsQuery({ pageNum, size, searchData });
 
     return (
-        <div className="row mt-4 gy-5">
-        <div className="col-12 form_container">
+        <Container fluid className="mt-4 gy-5">
             <h1 className="text-center">Bienvenido {authUser.name}</h1>
-            <div className="row">
-                <div className="col-6">
-                    <h3 className="text-center">Ultimas citas <Button variant="primary" size="sm" as={Link} to="/appointments">Ver todas</Button></h3>
-                    <table className="table table-striped" data-testid="citas">
+            <Row>
+                <Col sm className='custom_container'>
+                    <h3 className="text-center">Ultimas citas
+                    <br></br>
+                    <Button variant="primary" size="sm" as={Link} to="/appointments">Ver todas</Button></h3>
+                    <Table responsive data-testid="citas">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -39,13 +41,14 @@ function Home() {
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
-                    </div>
-                    <div className="col-6">
-                    <h3 className="text-center">Ultimos pacientes <Button variant="primary" size='sm' as={Link} to="/patients">Ver todos</Button></h3>
-                    <table className="table table-striped" data-testid="pacientes">
+                    </Table>
+                    </Col>
+                    <Col sm className='custom_container'>
+                    <h3 className="text-center">Ultimos pacientes 
+                    <br></br>
+                    <Button variant="primary" size='sm' as={Link} to="/patients">Ver todos</Button></h3>
+                    <Table responsive data-testid="pacientes">
                         <thead>
-
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Nombre</th>
@@ -63,11 +66,10 @@ function Home() {
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
-                    </div>  
-        </div>
-        </div>
-        </div>
+                    </Table>
+                    </Col>  
+        </Row>
+        </Container>
     );
 }
 

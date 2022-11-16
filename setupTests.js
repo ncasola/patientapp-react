@@ -4,14 +4,21 @@ import { appointmentApi } from "_store/appointment.api";
 import { authApi } from "_store/auth.api";
 import { userApi } from "_store/user.api";
 import { store } from '_store'
+import nock from 'nock';
 
-// Reset any request handlers that we may add during the tests,
-// so they don't affect other tests.
+beforeEach(() => {
+    jest.useFakeTimers();
+});
+
+
 afterEach(() => {
-    server.resetHandlers();
+    nock.cleanAll();
     // This is the solution to clear RTK Query cache after each test
     store.dispatch(patientApi.util.resetApiState());
     store.dispatch(appointmentApi.util.resetApiState());
     store.dispatch(authApi.util.resetApiState());
     store.dispatch(userApi.util.resetApiState());
+
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
 });

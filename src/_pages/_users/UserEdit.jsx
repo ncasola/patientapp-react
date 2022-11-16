@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { addToast } from "_store/toast.slice";
 import SubHeader from '_components/_layout/SubHeader';
+import { Container } from "react-bootstrap";
 
 const UserEdit = () => {
     const [updateUser, { isLoading, error }] = useUpdateUserMutation();
@@ -21,16 +22,14 @@ const UserEdit = () => {
         history.navigate('/users');
     }
     return (
-        <div className="row mt-4 gy-5">
-            <div className="col-12">
-            <SubHeader title="Editar Usuario" ruta="/users" />
-            <div className="form_container">
-            {data && <UserForm userData={data} handleUser={handleSubmit} />}
-            {isLoading && <p>Loading...</p>}
-            {error && <p>{error}</p>}
-            </div>
-            </div>
-        </div>
+        <Container fluid className="mt-4">
+        <SubHeader title="Editar Usuario" ruta="/users" />
+        <Container className="custom_container">
+          <UserForm userData={data} handleUser={handleSubmit} />
+          {isLoading && <p>Loading...</p>}
+          {error && <p>{error}</p>}
+        </Container>
+      </Container>
     )
 }
 

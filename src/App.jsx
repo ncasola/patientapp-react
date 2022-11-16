@@ -7,8 +7,8 @@ import {
 } from "react-router-dom";
 import { history } from "_helpers";
 import { PrivateRoute } from "_components";
-import { Home } from "_pages/home";
-import { Login } from "_pages/login";
+import { Home } from "_pages/_home";
+import { Login } from "_pages/_login";
 import { Header } from "_components/_layout/Header";
 import ToastList from "_components/ToastList";
 import PatientRoutes from "_pages/_patients/PatientRoutes";
@@ -27,7 +27,7 @@ function App() {
   return (
 <>
       <Header />
-      <div class="container app">
+      <div className="container app">
         <Routes>
           <Route
             path="/"

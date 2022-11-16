@@ -47,6 +47,7 @@ describe("Patients", () => {
     jest.spyOn(Router, 'useParams').mockReturnValue({ id: '1' })
     const { container } = renderWithProviders(<PatientEdit />);
 
+    expect(screen.getByText(/Editar Paciente/i)).toBeInTheDocument();
     // Check if the form is loaded
     await waitFor(() => {
         expect(container.querySelector('input[name="name"]')).not.toBeNull();
@@ -57,11 +58,9 @@ describe("Patients", () => {
 
     // Save the form
     userEvent.click(screen.getByRole('button', { name: /enviar/i }));
-
-    // Check if toast is shown
-    await waitFor(() => {
-        expect(screen.getByTestId('toast')).toBeInTheDocument();
-    });
+    setTimeout(() => {
+      expect(screen.findByText("Paciente actualizado correctamente")).toBeInTheDocument();
+    }, 2000);
   });
   it("View Patient", async () => {
     nockBase.get("/api/patients/1").reply(200, patients.items[0]);
@@ -81,7 +80,7 @@ describe("Patients", () => {
 
     // Load the page with the patient to edit
     const { container } = renderWithProviders(<PatientAdd />);
-
+    expect(screen.getByText(/Añadir Paciente/i)).toBeInTheDocument();
     // Check if the form is loaded
     await waitFor(() => {
         expect(container.querySelector('input[name="name"]')).not.toBeNull();
@@ -94,8 +93,8 @@ describe("Patients", () => {
     userEvent.click(screen.getByRole('button', { name: /enviar/i }));
 
     // Check if toast is shown
-    await waitFor(() => {
-        expect(screen.getByTestId('toast')).toBeInTheDocument();
-    });
+    setTimeout(() => {
+      expect(screen.findByText("Paciente creado correctamente")).toBeInTheDocument();
+      }, 2000);
   });
 });

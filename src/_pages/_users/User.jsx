@@ -1,23 +1,23 @@
 import React from "react";
 import { useGetUserQuery } from "_store/user.api";
 import { useParams } from "react-router-dom";
+import { Row, Col, Table, Container } from "react-bootstrap";
 import SubHeader from '_components/_layout/SubHeader';
 
 const User = () => {
   const params = useParams();
   const { data, error, isLoading } = useGetUserQuery(params.id);
     return (
-    <div className="row mt-4 gy-5">
-      <div className="col-12">
+      <Container fluid className="mt-4">
         <SubHeader title="Usuario" ruta="/users" />
         {isLoading && <p>Loading...</p>}
         {error && <p>{error}</p>}
         {data && (
-          <div className="form_container">
-            <div className="row">
-              <div className="col-12">
+          <Container className="custom_container">
+            <Row>
+              <Col sm>
                 <h3 className="text-center">Datos del usuario</h3>
-                <table className="table table-striped">
+                <Table responsive>
                   <thead>
                     <tr>
                       <th scope="col">#</th>
@@ -36,13 +36,12 @@ const User = () => {
                       <td>{data.roles[0].name}</td>
                     </tr>
                   </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+                  </Table>
+              </Col>
+            </Row>
+          </Container>
         )}
-      </div>
-    </div>
+      </Container>
   );
 };
 

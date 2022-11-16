@@ -20,7 +20,7 @@ export const patientApi = createApi({
     }),
     getPatient: builder.query({
         query: (id) => `/patients/${id}`,
-        providesTags: (result, error, arg) => [{ type: 'Patient', id: result.id }],
+        providesTags: (result, error, arg) => [{ type: 'Patient', id: arg.id }],
     }),
     createPatient: builder.mutation({
         query: (body) => ({

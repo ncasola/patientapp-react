@@ -1,13 +1,21 @@
+import SubHeader from "_components/_layout/SubHeader";
+import { Container, Row, Col } from "react-bootstrap";
+
 export { {{pascalCase name}} };
 
 function {{pascalCase name}}() {
-    return (
-        <div class="row">
-            <div class="col-md-12">
-                <h1>{{pascalCase name}}</h1>
-            </div>
-        </div>
-    );
+return (
+<Container fluid className="mt-4">
+    <SubHeader title="Pagina" ruta="/" />
+    <Container className="custom_container">
+        <Row>
+            <Col sm>
+            <h1>{{pascalCase name}}</h1>
+            </Col>
+        </Row>
+    </Container>
+</Container>
+);
 }
 
 export default {{pascalCase name}};

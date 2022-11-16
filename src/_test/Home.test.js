@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { getAllRows } from 'testing-library-table-queries'
 import { renderWithProviders } from '_test/test-utils'
-import { Home } from '_pages/home/Home'
+import { Home } from '_pages/_home/Home'
 import { patients, appointments, nockBase } from '_test/data'
 
 describe('Home', () => {

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ErrorMessage } from "@hookform/error-message";
+import { Form, Button, Col } from "react-bootstrap";
 
 const UserForm = ({userData, handleUser}) => {
   // form validation rules
@@ -41,70 +42,78 @@ const UserForm = ({userData, handleUser}) => {
             ))
           }
         />
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="form-group">
-            <label>Nombre</label>
-            <input
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <Form.Group as={Col}>
+            <Form.Label htmlFor="name">Nombre</Form.Label>
+            <Form.Control
               name="name"
               type="text"
               {...register("name")}
-              className={`form-control ${errors.name ? "is-invalid" : ""}`}
+              aria-label="Nombre"
+              className={`${errors.name ? "is-invalid" : ""}`}
             />
             <div className="invalid-feedback">{errors.name?.message}</div>
-          </div>
-          <div className="form-group">
-            <label>Apellido</label>
-            <input
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label htmlFor="lastname">Apellido</Form.Label>
+            <Form.Control
               name="lastname"
               type="text"
               {...register("lastname")}
-              className={`form-control ${errors.lastname ? "is-invalid" : ""}`}
+              aria-label="Apellido"
+              className={`${errors.lastname ? "is-invalid" : ""}`}
             />
             <div className="invalid-feedback">{errors.lastname?.message}</div>
-          </div>
-          <div className="form-group">
-            <label>Email</label>
-            <input
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label htmlFor="email">Email</Form.Label>
+            <Form.Control
               name="email"
               type="text"
               {...register("email")}
-              className={`form-control ${errors.email ? "is-invalid" : ""}`}
+              aria-label="Email"
+              className={`${errors.email ? "is-invalid" : ""}`}
             />
             <div className="invalid-feedback">{errors.email?.message}</div>
-          </div>
-          <div className="form-group">
-            <label>Password</label>
-            <input
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label htmlFor="password">Password</Form.Label>
+            <Form.Control
               name="password"
               type="password"
               {...register("password")}
-              className={`form-control ${errors.password ? "is-invalid" : ""}`}
+              aria-label="password"
+              className={`${errors.password ? "is-invalid" : ""}`}
             />
             <div className="invalid-feedback">{errors.password?.message}</div>
-          </div>
-          <div className="form-group">
-            <label>Rol</label>
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label htmlFor="role">Rol</Form.Label>
             <select
               name="role"
               {...register("role")}
-              className={`form-control ${errors.role ? "is-invalid" : ""}`}
+              aria-label="role"
+              className={`${errors.role ? "is-invalid" : ""}`}
             >
               <option value="1">Administrador</option>
               <option value="2">Usuario</option>
             </select>
             <div className="invalid-feedback">{errors.role?.message}</div>
-          </div>
-          <button
+          </Form.Group>
+          <div className="d-grid gap-2 mt-4">
+          <Button
             disabled={isSubmitting}
             type="submit"
-            className="btn btn-primary"
+            variant="primary"
+            size="lg"
           >
             {isSubmitting && (
               <span className="spinner-border spinner-border-sm mr-1"></span>
             )}
             Enviar
-          </button>
-        </form>
+          </Button>
+          </div>
+        </Form>
         </>
   );
 };

@@ -29,7 +29,7 @@ body {
     font-family: 'Righteous', sans-serif;
 }
 
-.form_container {
+.custom_container {
     width: 100%;
     background: #ffffff;
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
@@ -75,7 +75,7 @@ body {
     background-color: #145da0;
 }
 
-.button-step {
+.button-custom {
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -92,7 +92,7 @@ body {
     font-weight: 400;
 }
 
-.step_header {
+.custom_header {
     font-size: 18px;
     font-weight: 400;
     line-height: 22px;
@@ -102,22 +102,6 @@ body {
     background-color: white;
     padding: 10px;
     border-radius: 5px;
-}
-
-.indexedStep {
-    color: white;
-    width: 20px;
-    height: 20px;
-    font-size: 12px;
-    background-color: rgba(211, 211, 211, 0.8);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.indexedStep.accomplished {
-    background-color: #73d847;
 }
 
 input[type="radio"],
