@@ -26,8 +26,6 @@ function Header() {
         <Navbar.Brand>
           <img
             src={Logo}
-            width="100%"
-            height="30"
             alt="PatientAPP"
             className="d-inline-block align-top"
           />

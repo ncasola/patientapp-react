@@ -7,13 +7,9 @@ import { addToast } from "_store/toast.slice";
 import { useDispatch } from "react-redux";
 import Modal from 'react-bootstrap/Modal';
 
-const AppointmentAdd = ({startDate, endDate, show, setShow}) => {
+const AppointmentAdd = ({newAppointment, show, setShow}) => {
     const [createAppointment] = useCreateAppointmentMutation();
     const dispatch = useDispatch();
-    const newAppointment = {
-        dateAppointmentStart: startDate,
-        dateAppointmentEnd: endDate,
-    }
     const handleSubmit = async (appointment) => {
         await createAppointment(appointment);
         dispatch(addToast({message: "Cita creada correctamente", type: "success"}));

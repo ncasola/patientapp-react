@@ -113,8 +113,10 @@ const Appointments = () => {
         {isLoading && <p>Loading...</p>}
         {error && <p>{error}</p>}
         {showModalAdd && <AppointmentAdd
-          startDate={startDate}
-          endDate={endDate}
+          newAppointment={{
+            dateAppointmentStart: startDate,
+            dateAppointmentEnd: endDate,
+          }}
           show={showModalAdd}
           setShow={setShowModalAdd}
         />

@@ -89,7 +89,7 @@ const UserForm = ({userData, handleUser}) => {
           </Form.Group>
           <Form.Group as={Col}>
             <Form.Label htmlFor="role">Rol</Form.Label>
-            <select
+            <Form.Select
               name="role"
               {...register("role")}
               aria-label="role"
@@ -97,7 +97,7 @@ const UserForm = ({userData, handleUser}) => {
             >
               <option value="1">Administrador</option>
               <option value="2">Usuario</option>
-            </select>
+            </Form.Select>
             <div className="invalid-feedback">{errors.role?.message}</div>
           </Form.Group>
           <div className="d-grid gap-2 mt-4">

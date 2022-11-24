@@ -29,6 +29,24 @@ body {
     font-family: 'Righteous', sans-serif;
 }
 
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .navbar-brand img {
+        width: 100%;
+        max-width: 50vw;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .navbar-brand img {
+        width: 100%;
+        max-width: 10vw;
+    }
+} 
+
+
+
 .custom_container {
     width: 100%;
     background: #ffffff;
